@@ -55,7 +55,6 @@ const Contact = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // YAHAN FIX HAI: Sirf numbers allow karega, no spaces, no 91 91 91
   const handlePhoneChange = (e) => {
     const onlyNumbers = e.target.value.replace(/[^0-9]/g, "");
     if (onlyNumbers.length <= 10) {
@@ -120,12 +119,9 @@ const Contact = () => {
     formData.description.trim().length >= 20;
 
   return (
-    <section
-      id="contact-form"
-      className="relative py-20 md:py-28 lg:py-32 bg-[#0a0a0a]"
-    >
+    <section id="contact-form" className="relative py-20 md:py-28 lg:py-32">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#E5B700]/[0.03] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-accent/[0.03] rounded-full blur-[120px]" />
       </div>
 
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -136,15 +132,15 @@ const Contact = () => {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-center text-center mb-14 md:mb-16 w-full"
         >
-          <span className="text-[#E5B700] text-sm font-semibold tracking-wider uppercase mb-4 block">
+          <span className="text-accent text-sm font-semibold tracking-wider uppercase mb-4 block">
             Contact Us
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 tracking-tight">
             Start Your
             <br />
-            <span className="text-[#E5B700]">Digital Journey</span>
+            <span className="text-gradient">Digital Journey</span>
           </h2>
-          <p className="text-base md:text-lg text-zinc-400 max-w-xl mx-auto text-center">
+          <p className="text-base md:text-lg text-text-secondary max-w-xl mx-auto text-center">
             Ready to transform your business? Let's discuss your project and
             make it happen.
           </p>
@@ -159,98 +155,103 @@ const Contact = () => {
             className="lg:col-span-2 space-y-5"
           >
             <div>
-              <h3 className="text-lg font-semibold text-white mb-5 text-center lg:text-left">
+              <h3 className="text-lg font-semibold text-text-primary mb-5 text-center lg:text-left">
                 Get in Touch
               </h3>
 
               <div className="space-y-4">
                 <a
                   href="tel:+919731133425"
-                  className="flex items-center gap-3 text-zinc-400 hover:text-[#E5B700] transition-colors duration-200 cursor-pointer group"
+                  className="flex items-center gap-3 text-text-secondary hover:text-accent transition-colors duration-200 cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-[#E5B700] transition-colors duration-200">
+                  <div className="w-10 h-10 rounded-lg bg-white border border-border flex items-center justify-center group-hover:border-accent transition-colors duration-200">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500 mb-0.5">Primary</p>
-                    <p className="font-medium text-white">+91 9731133425</p>
+                    <p className="text-xs text-text-muted mb-0.5">Primary</p>
+                    <p className="font-medium text-text-primary">
+                      +91 9731133425
+                    </p>
                   </div>
                 </a>
 
                 <a
                   href="tel:+918088366098"
-                  className="flex items-center gap-3 text-zinc-400 hover:text-[#E5B700] transition-colors duration-200 cursor-pointer group"
+                  className="flex items-center gap-3 text-text-secondary hover:text-accent transition-colors duration-200 cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-[#E5B700] transition-colors duration-200">
+                  <div className="w-10 h-10 rounded-lg bg-white border border-border flex items-center justify-center group-hover:border-accent transition-colors duration-200">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500 mb-0.5">Secondary</p>
-                    <p className="font-medium text-white">+91 8088366098</p>
+                    <p className="text-xs text-text-muted mb-0.5">Secondary</p>
+                    <p className="font-medium text-text-primary">
+                      +91 8088366098
+                    </p>
                   </div>
                 </a>
 
-                {/* YAHAN FIX HAI: Updated Email */}
                 <a
                   href="mailto:naveenchavan29@gmail.com"
-                  className="flex items-center gap-3 text-zinc-400 hover:text-[#E5B700] transition-colors duration-200 cursor-pointer group"
+                  className="flex items-center gap-3 text-text-secondary hover:text-accent transition-colors duration-200 cursor-pointer group"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-[#E5B700] transition-colors duration-200">
+                  <div className="w-10 h-10 rounded-lg bg-white border border-border flex items-center justify-center group-hover:border-accent transition-colors duration-200">
                     <Mail className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500 mb-0.5">Email</p>
-                    <p className="font-medium text-white">
+                    <p className="text-xs text-text-muted mb-0.5">Email</p>
+                    <p className="font-medium text-text-primary">
                       naveenchavan29@gmail.com
                     </p>
                   </div>
                 </a>
 
-                <div className="flex items-center gap-3 text-zinc-400">
-                  <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                <div className="flex items-center gap-3 text-text-secondary">
+                  <div className="w-10 h-10 rounded-lg bg-white border border-border flex items-center justify-center">
                     <Globe className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500 mb-0.5">Location</p>
-                    <p className="font-medium text-white">
+                    <p className="text-xs text-text-muted mb-0.5">Location</p>
+                    <p className="font-medium text-text-primary">
                       India (Serving Globally)
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-zinc-400">
-                  <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                <div className="flex items-center gap-3 text-text-secondary">
+                  <div className="w-10 h-10 rounded-lg bg-white border border-border flex items-center justify-center">
                     <Clock className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500 mb-0.5">
+                    <p className="text-xs text-text-muted mb-0.5">
                       Response Time
                     </p>
-                    <p className="font-medium text-white">Within 24 Hours</p>
+                    <p className="font-medium text-text-primary">
+                      Within 24 Hours
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#E5B700]/5 rounded-xl border border-[#E5B700]/20 p-5">
-              <h4 className="text-white font-semibold text-sm mb-3 text-center lg:text-left">
+            <div className="bg-accent/5 rounded-xl border border-accent/20 p-5">
+              <h4 className="text-text-primary font-semibold text-sm mb-3 text-center lg:text-left">
                 Why Choose SENOVA?
               </h4>
-              <ul className="space-y-2.5 text-zinc-400 text-sm">
+              <ul className="space-y-2.5 text-text-secondary text-sm">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#E5B700] flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
                   <span>24/7 Support & Maintenance</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#E5B700] flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
                   <span>Transparent Pricing & Timelines</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#E5B700] flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
                   <span>Clean, Maintainable Code</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-[#E5B700] flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
                   <span>Scalable Solutions</span>
                 </li>
               </ul>
@@ -266,9 +267,9 @@ const Contact = () => {
           >
             <form
               onSubmit={handleSubmit}
-              className="bg-zinc-900 rounded-xl border border-zinc-800 shadow-sm p-6 md:p-8"
+              className="bg-white rounded-xl border border-border shadow-sm p-6 md:p-8"
             >
-              <h3 className="text-lg font-semibold text-white mb-6">
+              <h3 className="text-lg font-semibold text-text-primary mb-6">
                 Start Your Project
               </h3>
 
@@ -276,9 +277,9 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-white mb-2"
+                    className="block text-sm font-medium text-text-primary mb-2"
                   >
-                    Your Name <span className="text-[#E5B700]">*</span>
+                    Your Name <span className="text-accent">*</span>
                   </label>
                   <input
                     type="text"
@@ -287,7 +288,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="John Doe"
-                    className={`w-full bg-zinc-950 border ${errors.name ? "border-red-500" : "border-zinc-800 focus:border-[#E5B700]"} rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#E5B700] transition-all duration-200`}
+                    className={`w-full bg-bg-primary border ${errors.name ? "border-red-500" : "border-border focus:border-accent"} rounded-lg px-4 py-3 text-text-primary placeholder-text-muted focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-200`}
                   />
                   {errors.name && (
                     <p className="mt-2 text-xs text-red-500 flex items-center gap-1.5">
@@ -300,9 +301,9 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-white mb-2"
+                    className="block text-sm font-medium text-text-primary mb-2"
                   >
-                    Email Address <span className="text-[#E5B700]">*</span>
+                    Email Address <span className="text-accent">*</span>
                   </label>
                   <input
                     type="email"
@@ -311,7 +312,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="john@company.com"
-                    className={`w-full bg-zinc-950 border ${errors.email ? "border-red-500" : "border-zinc-800 focus:border-[#E5B700]"} rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#E5B700] transition-all duration-200`}
+                    className={`w-full bg-bg-primary border ${errors.email ? "border-red-500" : "border-border focus:border-accent"} rounded-lg px-4 py-3 text-text-primary placeholder-text-muted focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-200`}
                   />
                   {errors.email && (
                     <p className="mt-2 text-xs text-red-500 flex items-center gap-1.5">
@@ -324,16 +325,16 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="phone"
-                    className="block text-sm font-medium text-white mb-2"
+                    className="block text-sm font-medium text-text-primary mb-2"
                   >
-                    Phone Number <span className="text-[#E5B700]">*</span>
+                    Phone Number <span className="text-accent">*</span>
                   </label>
 
-                  {/* YAHAN FIX HAI: Flexbox layout taaki +91 overlap na ho */}
+                  {/* FIX: Flexbox layout for +91 without overlap in Light Mode */}
                   <div
-                    className={`flex items-center w-full bg-zinc-950 border ${errors.phone ? "border-red-500" : "border-zinc-800 focus-within:border-[#E5B700]"} rounded-lg overflow-hidden focus-within:ring-1 focus-within:ring-[#E5B700] transition-all duration-200`}
+                    className={`flex items-center w-full bg-bg-primary border ${errors.phone ? "border-red-500" : "border-border focus-within:border-accent"} rounded-lg overflow-hidden focus-within:ring-1 focus-within:ring-accent transition-all duration-200`}
                   >
-                    <div className="pl-4 pr-2 py-3 text-zinc-500 select-none flex items-center justify-center bg-transparent border-r border-zinc-800">
+                    <div className="pl-4 pr-2 py-3 text-text-muted select-none flex items-center justify-center bg-transparent border-r border-border/50">
                       +91
                     </div>
                     <input
@@ -345,7 +346,7 @@ const Contact = () => {
                       onChange={handleChange}
                       placeholder="9876543210"
                       maxLength="10"
-                      className="w-full py-3 pl-3 pr-4 bg-transparent text-white placeholder-zinc-600 focus:outline-none"
+                      className="w-full py-3 pl-3 pr-4 bg-transparent text-text-primary placeholder-text-muted focus:outline-none"
                     />
                   </div>
 
@@ -360,10 +361,9 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="description"
-                    className="block text-sm font-medium text-white mb-2"
+                    className="block text-sm font-medium text-text-primary mb-2"
                   >
-                    Project Description{" "}
-                    <span className="text-[#E5B700]">*</span>
+                    Project Description <span className="text-accent">*</span>
                   </label>
                   <textarea
                     id="description"
@@ -372,7 +372,7 @@ const Contact = () => {
                     onChange={handleChange}
                     placeholder="Tell us about your project, goals, and timeline..."
                     rows={4}
-                    className={`w-full bg-zinc-950 border ${errors.description ? "border-red-500" : "border-zinc-800 focus:border-[#E5B700]"} rounded-lg px-4 py-3 text-white placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-[#E5B700] transition-all duration-200 resize-none`}
+                    className={`w-full bg-bg-primary border ${errors.description ? "border-red-500" : "border-border focus:border-accent"} rounded-lg px-4 py-3 text-text-primary placeholder-text-muted focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-200 resize-none`}
                   />
                   {errors.description && (
                     <p className="mt-2 text-xs text-red-500 flex items-center gap-1.5">
@@ -388,8 +388,8 @@ const Contact = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className={`p-4 rounded-lg flex items-start gap-3 ${
                       submitStatus.type === "success"
-                        ? "bg-green-500/10 border border-green-500/30 text-green-400"
-                        : "bg-red-500/10 border border-red-500/30 text-red-400"
+                        ? "bg-green-50 text-green-700 border border-green-200"
+                        : "bg-red-50 text-red-700 border border-red-200"
                     }`}
                   >
                     {submitStatus.type === "success" ? (
@@ -408,8 +408,8 @@ const Contact = () => {
                   disabled={isSubmitting}
                   className={`w-full font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 ${
                     isFormValid && !isSubmitting
-                      ? "bg-[#E5B700] hover:bg-[#D4A900] text-zinc-950 cursor-pointer shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                      : "bg-[#E5B700]/20 text-white/30 cursor-not-allowed"
+                      ? "bg-accent hover:bg-accent-hover text-white cursor-pointer shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                      : "bg-accent/50 text-white/50 cursor-not-allowed"
                   }`}
                 >
                   {isSubmitting ? (

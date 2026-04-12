@@ -1,13 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import {
-  Phone,
-  Mail,
-  Linkedin,
-  Github,
-  Twitter,
-  ChevronRight,
-} from "lucide-react";
+// DEKHIYE: Yahan se Linkedin hata diya hai taaki crash na ho
+import { Phone, Mail, ChevronRight } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -79,25 +73,29 @@ const Footer = () => {
               </a>
             </div>
 
-            {/* Pro Addition: Social Icons */}
+            {/* 100% CRASH-FREE Social Icon (Using raw SVG) */}
             <div className="flex items-center justify-center md:justify-start gap-4">
               <a
-                href="#"
+                href="https://www.linkedin.com/in/naveen-chavan-8852a9368/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center text-text-secondary hover:text-white hover:bg-accent hover:border-accent transition-all duration-300"
               >
-                <Linkedin size={18} />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center text-text-secondary hover:text-white hover:bg-[#333] hover:border-[#333] transition-all duration-300"
-              >
-                <Github size={18} />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center text-text-secondary hover:text-white hover:bg-[#1DA1F2] hover:border-[#1DA1F2] transition-all duration-300"
-              >
-                <Twitter size={18} />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                  <rect x="2" y="9" width="4" height="12"></rect>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
               </a>
             </div>
           </div>
