@@ -21,7 +21,7 @@ const projects = [
       "Visual-first bakery e-commerce platform showcasing products with beautiful imagery and easy ordering experience.",
     result: "Featured in local news",
     techStack: ["E-commerce", "React", "Payment Integration"],
-    liveUrl: "https://shriharis4.github.io/Cake-De-Lite/",
+    liveUrl: "https://cake-de-lite.vercel.app/",
     staticImage: "/assets/CakeDeLite.png",
   },
   {
@@ -31,7 +31,7 @@ const projects = [
       "High-end fitness center website with stunning visuals and local SEO optimization for regional reach.",
     result: "200% increase in inquiries",
     techStack: ["React", "Tailwind", "SEO", "Animations"],
-    liveUrl: "#",
+    liveUrl: "https://mj-fitness-club.vercel.app/",
     staticImage: "/assets/MJFitness.png",
   },
   {
@@ -41,7 +41,7 @@ const projects = [
       "Complete salon booking platform with WhatsApp automation for appointment reminders and confirmations.",
     result: "60% management time saved",
     techStack: ["React", "WhatsApp API", "Firebase", "UI/UX"],
-    liveUrl: "#",
+    liveUrl: "https://gleamstudio.vercel.app/",
     staticImage: "/assets/GleamStudio.png",
   },
 ];
