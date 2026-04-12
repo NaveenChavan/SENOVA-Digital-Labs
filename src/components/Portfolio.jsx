@@ -31,7 +31,7 @@ const projects = [
       "High-end fitness center website with stunning visuals and local SEO optimization for regional reach.",
     result: "200% increase in inquiries",
     techStack: ["React", "Tailwind", "SEO", "Animations"],
-    liveUrl: "https://mj-fitness-club.vercel.app/",
+    liveUrl: "https://mjfitnessclub.vercel.app/",
     staticImage: "/assets/MJFitness.png",
   },
   {
