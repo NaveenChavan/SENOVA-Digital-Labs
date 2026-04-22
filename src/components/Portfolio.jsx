@@ -11,18 +11,18 @@ const projects = [
       "Data-driven health and nutrition tracking platform with personalized meal plans and progress analytics.",
     result: "10,000+ active users",
     techStack: ["React", "Charts", "Firebase", "Analytics"],
-    liveUrl: "https://mr-calories.vercel.app/",
-    staticImage: "/assets/MrCalories.png",
+    liveUrl: "https://fit-bite-cafe.vercel.app/",
+    staticImage: "/assets/FitbiteCafe.png",
   },
   {
     id: 2,
-    title: "fit-bite-cafe",
+    title: "Cake-De-Lite",
     description:
       "Visual-first bakery e-commerce platform showcasing products with beautiful imagery and easy ordering experience.",
     result: "Featured in local news",
     techStack: ["E-commerce", "React", "Payment Integration"],
-    liveUrl: "https://fit-bite-cafe.vercel.app/",
-    staticImage: "/assets/FitbiteCafe.png",
+    liveUrl: "https://cake-de-lite.vercel.app/",
+    staticImage: "/assets/CakeDeLite.png",
   },
   {
     id: 3,
