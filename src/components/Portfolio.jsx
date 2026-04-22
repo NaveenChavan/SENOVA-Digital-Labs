@@ -6,7 +6,7 @@ import { ExternalLink, ArrowRight } from "lucide-react";
 const projects = [
   {
     id: 1,
-    title: "Mr. Calories",
+    title: "FitBiteCafe",
     description:
       "Data-driven health and nutrition tracking platform with personalized meal plans and progress analytics.",
     result: "10,000+ active users",
