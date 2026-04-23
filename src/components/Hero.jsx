@@ -120,8 +120,8 @@ const Hero = () => {
           </div>
 
           <p className="text-base sm:text-lg md:text-xl text-[#B3CFE5]/80 max-w-2xl mx-auto mb-10 leading-relaxed text-center">
-            Transforming local businesses into tech-driven powerhouses with
-            clean code, premium design, and intelligent automation.
+            Transforming businesses into tech-driven powerhouses with clean
+            code, premium design, and intelligent automation.
           </p>
 
           {/* Action Buttons */}

@@ -16,7 +16,6 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  // Tumhari Web3Forms Access Key - DO NOT TOUCH
   const WEB3FORMS_ACCESS_KEY = "dbca4209-f902-4fd7-992e-0b850a5a2c4a";
 
   const validateForm = () => {
@@ -56,14 +55,12 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      // 1. Firebase Data Save
       await addDoc(collection(db, "leads"), {
         ...formData,
         phone: "+91 " + formData.phone,
         createdAt: serverTimestamp(),
       });
 
-      // 2. Email Notification Send
       const emailPayload = {
         access_key: WEB3FORMS_ACCESS_KEY,
         subject: `New SENOVA Lead: ${formData.name}`,
@@ -112,66 +109,76 @@ const Contact = () => {
       className="py-20 md:py-28 bg-[#0A1931] relative z-20 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header Section - YAHAN FIX KIYA HAI: flex aur flex-col se center alignment force ki */}
-        <div className="flex flex-col items-center justify-center text-center w-full mb-14">
+        {/* Header Section */}
+        <div className="flex flex-col items-center justify-center text-center w-full mb-14 px-4">
           <span className="text-[#4A7FA7] font-bold tracking-widest uppercase text-sm mb-2 block">
             Get In Touch
           </span>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-[#F6FAFD] mb-4">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#F6FAFD] mb-4 break-words w-full">
             Start Your <span className="text-[#B3CFE5]">Digital Journey</span>
           </h2>
-          <p className="text-[#B3CFE5]/70 max-w-2xl w-full mx-auto text-sm md:text-base text-center">
+          <p className="text-[#B3CFE5]/70 w-full max-w-xl mx-auto text-sm md:text-base text-center px-2">
             Have a vision? Let's bring it to life. Fill out the form below and
             our team will get back to you promptly.
           </p>
         </div>
 
         {/* Content Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
-          {/* Info Side (Col Span 5) */}
-          <div className="lg:col-span-5 flex flex-col">
-            <div className="bg-[#1A3D63]/40 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-[#4A7FA7]/20 flex-grow shadow-xl h-full flex flex-col justify-center">
-              <h3 className="text-2xl font-bold mb-10 text-[#F6FAFD]">
-                Contact Information
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-stretch">
+          {/* Contact Info Side */}
+          <div className="lg:col-span-5 flex flex-col h-full">
+            <div className="bg-[#1A3D63]/30 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-[#4A7FA7]/20 shadow-xl flex flex-col justify-center h-full">
+              <h3 className="text-xl md:text-2xl font-bold mb-8 text-[#F6FAFD]">
+                Contact Info
               </h3>
 
-              <div className="space-y-10">
-                <div className="flex items-start gap-5 group">
-                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#B3CFE5] group-hover:bg-[#4A7FA7] transition-all duration-300 shadow-md">
-                    <Phone className="w-6 h-6 text-[#4A7FA7] group-hover:text-[#0A1931] transition-colors" />
+              <div className="space-y-8">
+                {/* WhatsApp Link */}
+                <a
+                  href="https://wa.me/919731133425?text=Hi%20SENOVA,%20I'd%20like%20to%20discuss%20a%20project."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-4 group cursor-pointer"
+                >
+                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#B3CFE5] group-hover:bg-[#4A7FA7] transition-all duration-300 shadow-md">
+                    <Phone className="w-5 h-5 text-[#4A7FA7] group-hover:text-[#0A1931] transition-colors" />
                   </div>
-                  <div className="pt-1">
-                    <p className="text-xs text-[#B3CFE5]/60 uppercase font-bold tracking-wider mb-1.5">
+                  <div className="pt-1 overflow-hidden">
+                    <p className="text-[11px] text-[#B3CFE5]/60 uppercase font-bold tracking-wider mb-1">
                       Call / WhatsApp
                     </p>
-                    <p className="text-[#F6FAFD] font-semibold text-lg tracking-wide">
+                    <p className="text-[#F6FAFD] font-semibold text-base md:text-lg tracking-wide group-hover:text-[#B3CFE5] transition-colors">
                       +91 9731133425
                     </p>
                   </div>
-                </div>
+                </a>
 
-                <div className="flex items-start gap-5 group">
-                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#B3CFE5] group-hover:bg-[#4A7FA7] transition-all duration-300 shadow-md">
-                    <Mail className="w-6 h-6 text-[#4A7FA7] group-hover:text-[#0A1931] transition-colors" />
+                {/* Email Link */}
+                <a
+                  href="mailto:naveenchavan29@gmail.com"
+                  className="flex items-start gap-4 group cursor-pointer"
+                >
+                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#B3CFE5] group-hover:bg-[#4A7FA7] transition-all duration-300 shadow-md">
+                    <Mail className="w-5 h-5 text-[#4A7FA7] group-hover:text-[#0A1931] transition-colors" />
                   </div>
-                  <div className="pt-1">
-                    <p className="text-xs text-[#B3CFE5]/60 uppercase font-bold tracking-wider mb-1.5">
+                  <div className="pt-1 overflow-hidden">
+                    <p className="text-[11px] text-[#B3CFE5]/60 uppercase font-bold tracking-wider mb-1">
                       Email Address
                     </p>
-                    <p className="text-[#F6FAFD] font-semibold text-base break-all">
+                    <p className="text-[#F6FAFD] font-semibold text-sm md:text-base break-all group-hover:text-[#B3CFE5] transition-colors">
                       naveenchavan29@gmail.com
                     </p>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Form Side (Col Span 7) */}
-          <div className="lg:col-span-7 flex flex-col">
+          {/* Form Side */}
+          <div className="lg:col-span-7 flex flex-col h-full">
             <form
               onSubmit={handleSubmit}
-              className="bg-[#1A3D63]/30 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-[#4A7FA7]/20 shadow-2xl flex-grow flex flex-col justify-between h-full"
+              className="bg-[#1A3D63]/30 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-[#4A7FA7]/20 shadow-2xl flex flex-col justify-between h-full"
             >
               <div className="space-y-6">
                 {/* Name & Phone Grid */}
@@ -184,7 +191,7 @@ const Contact = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`w-full bg-[#0F2546] border ${errors.name ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
+                      className={`w-full bg-[#0F2546] border ${errors.name ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] text-sm focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
                       placeholder="Naveen Chavan"
                     />
                     {errors.name && (
@@ -203,7 +210,7 @@ const Contact = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       maxLength="10"
-                      className={`w-full bg-[#0F2546] border ${errors.phone ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
+                      className={`w-full bg-[#0F2546] border ${errors.phone ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] text-sm focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
                       placeholder="9731133425"
                     />
                     {errors.phone && (
@@ -223,7 +230,7 @@ const Contact = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full bg-[#0F2546] border ${errors.email ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
+                    className={`w-full bg-[#0F2546] border ${errors.email ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] text-sm focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
                     placeholder="name@company.com"
                   />
                   {errors.email && (
@@ -243,7 +250,7 @@ const Contact = () => {
                     value={formData.description}
                     onChange={handleChange}
                     rows={4}
-                    className={`w-full bg-[#0F2546] border ${errors.description ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all resize-none`}
+                    className={`w-full bg-[#0F2546] border ${errors.description ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] text-sm focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all resize-none`}
                     placeholder="Describe your vision (Min 20 characters)..."
                   />
                   {errors.description && (
@@ -276,7 +283,7 @@ const Contact = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-8 bg-[#4A7FA7] hover:bg-[#B3CFE5] text-[#0A1931] font-bold py-4 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(74,127,167,0.2)] hover:shadow-[0_0_30px_rgba(179,207,229,0.4)] flex items-center justify-center gap-2"
+                className="w-full mt-6 bg-[#4A7FA7] hover:bg-[#B3CFE5] text-[#0A1931] font-bold py-3.5 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(74,127,167,0.2)] hover:shadow-[0_0_30px_rgba(179,207,229,0.4)] flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   "Processing..."
