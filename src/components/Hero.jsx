@@ -10,26 +10,50 @@ import {
   Terminal,
 } from "lucide-react";
 
+// Naya Smooth Floating Badge Component
 const FloatingBadge = ({ children, delay = 0, className = "" }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.8 }}
     animate={{ opacity: 1, scale: 1 }}
     transition={{ duration: 0.5, delay }}
-    // YAHAN FIX HAI: Premium Dark Theme Glassmorphism
-    className={`absolute hidden xl:flex items-center gap-2 bg-[#1A3D63]/50 backdrop-blur-md border border-[#4A7FA7]/30 rounded-full px-4 py-2 shadow-[0_0_20px_rgba(74,127,167,0.15)] ${className}`}
+    className={`absolute hidden xl:flex ${className}`}
   >
-    {children}
+    {/* Ye inner div continuously float karega */}
+    <motion.div
+      animate={{ y: [-8, 8, -8] }}
+      transition={{
+        duration: 4,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: delay, // Alag-alag time par float karenge
+      }}
+      className="flex items-center gap-2 bg-[#1A3D63]/50 backdrop-blur-md border border-[#4A7FA7]/30 rounded-full px-4 py-2 shadow-[0_0_20px_rgba(74,127,167,0.15)]"
+    >
+      {children}
+    </motion.div>
   </motion.div>
 );
 
 const Hero = () => {
   return (
-    // YAHAN FIX HAI: Dark Navy Background (#0A1931)
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 bg-[#0A1931]">
-      {/* Background Glowing Mesh Effect */}
+      {/* Background Glowing Mesh Effect (Ab ye pulse karega) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#4A7FA7]/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#1A3D63]/30 rounded-full blur-[100px]" />
+        <motion.div
+          animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.15, 0.1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#4A7FA7] rounded-full blur-[120px]"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.4, 0.3] }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+          className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#1A3D63] rounded-full blur-[100px]"
+        />
       </div>
 
       <FloatingBadge delay={0.8} className="top-1/4 left-10">
@@ -37,12 +61,12 @@ const Hero = () => {
         <span className="text-sm text-[#F6FAFD]">Premium Quality</span>
       </FloatingBadge>
 
-      <FloatingBadge delay={1} className="top-1/3 right-10">
+      <FloatingBadge delay={1.2} className="top-1/3 right-10">
         <span className="w-2 h-2 bg-[#50C878] rounded-full animate-pulse shadow-[0_0_10px_#50C878]" />
         <span className="text-sm text-[#F6FAFD]">24/7 Support</span>
       </FloatingBadge>
 
-      <FloatingBadge delay={1.2} className="bottom-1/3 left-16">
+      <FloatingBadge delay={1.6} className="bottom-1/3 left-16">
         <Terminal className="w-4 h-4 text-[#B3CFE5]" />
         <span className="text-[#B3CFE5] font-semibold">100%</span>
         <span className="text-sm text-[#F6FAFD]/80">Scalable Code</span>
@@ -63,32 +87,37 @@ const Hero = () => {
             </span>
           </div>
 
-          {/* YAHAN FIX HAI: Robotic Typewriter Heading */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#F6FAFD] leading-tight mb-6 tracking-tight min-h-[140px] md:min-h-[180px]">
-            We Build
-            <br />
-            <span className="text-[#B3CFE5]">
-              <TypeAnimation
-                sequence={[
-                  "High-Performance Systems",
-                  2000,
-                  "Automation Workflows",
-                  2000,
-                  "Scalable SaaS Products",
-                  2000,
-                  "Your Digital Future",
-                  2000,
-                ]}
-                wrapper="span"
-                speed={50}
-                repeat={Infinity}
-              />
-            </span>
-            <br />
-            <span className="text-3xl sm:text-4xl md:text-5xl opacity-90">
+          {/* Heading Section */}
+          <div className="mb-6 w-full max-w-4xl mx-auto">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#F6FAFD] leading-tight tracking-tight">
+              We Build
+            </h1>
+
+            {/* YAHAN FIX HAI: Fixed height div for TypeAnimation to stop layout jumping */}
+            <div className="h-[48px] sm:h-[60px] md:h-[80px] lg:h-[96px] flex items-center justify-center my-2">
+              <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#B3CFE5] inline-block">
+                <TypeAnimation
+                  sequence={[
+                    "High-Performance Systems",
+                    2000,
+                    "Automation Workflows",
+                    2000,
+                    "Scalable SaaS Products",
+                    2000,
+                    "Your Digital Future",
+                    2000,
+                  ]}
+                  wrapper="span"
+                  speed={50}
+                  repeat={Infinity}
+                />
+              </span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#F6FAFD] opacity-90 mt-2">
               To Get You More Customers
-            </span>
-          </h1>
+            </h2>
+          </div>
 
           <p className="text-base sm:text-lg md:text-xl text-[#B3CFE5]/80 max-w-2xl mx-auto mb-10 leading-relaxed text-center">
             Transforming local businesses into tech-driven powerhouses with

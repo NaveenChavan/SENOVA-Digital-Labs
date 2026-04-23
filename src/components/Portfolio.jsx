@@ -16,13 +16,13 @@ const projects = [
   },
   {
     id: 2,
-    title: "Cake-De-Lite",
+    title: "golden-crumb-bakery",
     description:
       "Visual-first bakery e-commerce platform showcasing products with beautiful imagery and easy ordering experience.",
     result: "Featured in local news",
     techStack: ["E-commerce", "React", "Payment Integration"],
-    liveUrl: "https://cake-de-lite.vercel.app/",
-    staticImage: "/assets/CakeDeLite.png",
+    liveUrl: "https://golden-crumb-bakery-nine.vercel.app/",
+    staticImage: "/assets/GoldenCrumbBakery.png",
   },
   {
     id: 3,

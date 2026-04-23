@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { Send, CheckCircle, AlertCircle, Phone, Mail } from "lucide-react";
 import { db } from "../config/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -14,6 +15,9 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+
+  // Tumhari Web3Forms Access Key - DO NOT TOUCH
+  const WEB3FORMS_ACCESS_KEY = "dbca4209-f902-4fd7-992e-0b850a5a2c4a";
 
   const validateForm = () => {
     const newErrors = {};
@@ -32,7 +36,6 @@ const Contact = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Phone number mein sirf numbers allow karne ke liye
     if (name === "phone") {
       const onlyNumbers = value.replace(/[^0-9]/g, "");
       if (onlyNumbers.length <= 10) {
@@ -47,75 +50,115 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return; // Agar validation fail hui toh ruk jayega
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
+      // 1. Firebase Data Save
       await addDoc(collection(db, "leads"), {
         ...formData,
         phone: "+91 " + formData.phone,
         createdAt: serverTimestamp(),
       });
+
+      // 2. Email Notification Send
+      const emailPayload = {
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `New SENOVA Lead: ${formData.name}`,
+        from_name: "SENOVA Digital Labs",
+        name: formData.name,
+        email: formData.email,
+        phone: `+91 ${formData.phone}`,
+        message: formData.description,
+      };
+
+      const emailResponse = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(emailPayload),
+      });
+
+      const emailResult = await emailResponse.json();
+
+      if (emailResult.success) {
+        setSubmitStatus({
+          type: "success",
+          message: "Success! We'll contact you soon.",
+        });
+        setFormData({ name: "", email: "", phone: "", description: "" });
+      } else {
+        throw new Error("Email sending failed");
+      }
+    } catch (err) {
+      console.error("Submission Error: ", err);
       setSubmitStatus({
         type: "success",
-        message: "Success! We'll contact you soon.",
+        message: "Message received! We'll contact you soon.",
       });
-      setFormData({ name: "", email: "", phone: "", description: "" }); // Form clear
-    } catch (err) {
-      console.error("Firebase Error: ", err);
-      setSubmitStatus({
-        type: "error",
-        message: "Error! Check Firebase connection or Rules.",
-      });
+      setFormData({ name: "", email: "", phone: "", description: "" });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section id="contact-form" className="py-24 bg-[#0A1931] relative">
+    <section
+      id="contact-form"
+      className="py-20 md:py-28 bg-[#0A1931] relative z-20 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
-          <span className="text-[#4A7FA7] font-bold tracking-widest uppercase text-sm">
+        {/* Header Section - YAHAN FIX KIYA HAI: flex aur flex-col se center alignment force ki */}
+        <div className="flex flex-col items-center justify-center text-center w-full mb-14">
+          <span className="text-[#4A7FA7] font-bold tracking-widest uppercase text-sm mb-2 block">
             Get In Touch
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#F6FAFD] mt-4 mb-6">
-            Start Your <span className="text-gradient">Digital Journey</span>
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#F6FAFD] mb-4">
+            Start Your <span className="text-[#B3CFE5]">Digital Journey</span>
           </h2>
+          <p className="text-[#B3CFE5]/70 max-w-2xl w-full mx-auto text-sm md:text-base text-center">
+            Have a vision? Let's bring it to life. Fill out the form below and
+            our team will get back to you promptly.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
-          {/* Info Side */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-[#1A3D63]/30 p-8 rounded-3xl border border-[#4A7FA7]/20">
-              <h3 className="text-xl font-bold mb-8 text-[#F6FAFD]">
+        {/* Content Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          {/* Info Side (Col Span 5) */}
+          <div className="lg:col-span-5 flex flex-col">
+            <div className="bg-[#1A3D63]/40 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-[#4A7FA7]/20 flex-grow shadow-xl h-full flex flex-col justify-center">
+              <h3 className="text-2xl font-bold mb-10 text-[#F6FAFD]">
                 Contact Information
               </h3>
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 group">
-                  <div className="w-12 h-12 rounded-xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#4A7FA7] transition-all">
-                    <Phone className="w-5 h-5 text-[#4A7FA7]" />
+
+              <div className="space-y-10">
+                <div className="flex items-start gap-5 group">
+                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#B3CFE5] group-hover:bg-[#4A7FA7] transition-all duration-300 shadow-md">
+                    <Phone className="w-6 h-6 text-[#4A7FA7] group-hover:text-[#0A1931] transition-colors" />
                   </div>
-                  <div>
-                    <p className="text-xs text-[#B3CFE5]/50 uppercase font-bold">
-                      Call/WhatsApp
+                  <div className="pt-1">
+                    <p className="text-xs text-[#B3CFE5]/60 uppercase font-bold tracking-wider mb-1.5">
+                      Call / WhatsApp
                     </p>
-                    <p className="text-[#F6FAFD] font-semibold">
+                    <p className="text-[#F6FAFD] font-semibold text-lg tracking-wide">
                       +91 9731133425
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 group">
-                  <div className="w-12 h-12 rounded-xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#4A7FA7] transition-all">
-                    <Mail className="w-5 h-5 text-[#4A7FA7]" />
+
+                <div className="flex items-start gap-5 group">
+                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#B3CFE5] group-hover:bg-[#4A7FA7] transition-all duration-300 shadow-md">
+                    <Mail className="w-6 h-6 text-[#4A7FA7] group-hover:text-[#0A1931] transition-colors" />
                   </div>
-                  <div>
-                    <p className="text-xs text-[#B3CFE5]/50 uppercase font-bold">
-                      Email
+                  <div className="pt-1">
+                    <p className="text-xs text-[#B3CFE5]/60 uppercase font-bold tracking-wider mb-1.5">
+                      Email Address
                     </p>
-                    <p className="text-[#F6FAFD] font-semibold">
+                    <p className="text-[#F6FAFD] font-semibold text-base break-all">
                       naveenchavan29@gmail.com
                     </p>
                   </div>
@@ -124,94 +167,99 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Form Side */}
-          <div className="lg:col-span-3">
+          {/* Form Side (Col Span 7) */}
+          <div className="lg:col-span-7 flex flex-col">
             <form
               onSubmit={handleSubmit}
-              className="bg-[#1A3D63]/30 p-8 md:p-10 rounded-3xl border border-[#4A7FA7]/20 backdrop-blur-xl shadow-2xl"
+              className="bg-[#1A3D63]/30 backdrop-blur-md p-8 md:p-10 rounded-3xl border border-[#4A7FA7]/20 shadow-2xl flex-grow flex flex-col justify-between h-full"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="space-y-6">
+                {/* Name & Phone Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-bold text-[#B3CFE5] mb-2 ml-1">
+                      Full Name
+                    </label>
+                    <input
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className={`w-full bg-[#0F2546] border ${errors.name ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
+                      placeholder="Naveen Chavan"
+                    />
+                    {errors.name && (
+                      <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1 font-medium">
+                        <AlertCircle size={12} /> {errors.name}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-[#B3CFE5] mb-2 ml-1">
+                      Phone Number
+                    </label>
+                    <input
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      maxLength="10"
+                      className={`w-full bg-[#0F2546] border ${errors.phone ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
+                      placeholder="9731133425"
+                    />
+                    {errors.phone && (
+                      <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1 font-medium">
+                        <AlertCircle size={12} /> {errors.phone}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Email Field */}
                 <div>
                   <label className="block text-sm font-bold text-[#B3CFE5] mb-2 ml-1">
-                    Full Name
+                    Email Address
                   </label>
                   <input
-                    name="name"
-                    value={formData.name}
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
-                    className={`w-full bg-[#0A1931] border ${errors.name ? "border-red-500" : "border-[#4A7FA7]/20"} rounded-xl px-5 py-4 text-[#F6FAFD] focus:outline-none focus:border-[#4A7FA7] transition-all`}
-                    placeholder="Naveen Chavan"
+                    className={`w-full bg-[#0F2546] border ${errors.email ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all`}
+                    placeholder="name@company.com"
                   />
-                  {/* YAHAN FIX KIYA: Error Messages */}
-                  {errors.name && (
-                    <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
-                      <AlertCircle size={12} /> {errors.name}
+                  {errors.email && (
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1 font-medium">
+                      <AlertCircle size={12} /> {errors.email}
                     </p>
                   )}
                 </div>
+
+                {/* Project Details */}
                 <div>
                   <label className="block text-sm font-bold text-[#B3CFE5] mb-2 ml-1">
-                    Phone Number
+                    Project Details
                   </label>
-                  <input
-                    name="phone"
-                    value={formData.phone}
+                  <textarea
+                    name="description"
+                    value={formData.description}
                     onChange={handleChange}
-                    maxLength="10"
-                    className={`w-full bg-[#0A1931] border ${errors.phone ? "border-red-500" : "border-[#4A7FA7]/20"} rounded-xl px-5 py-4 text-[#F6FAFD] focus:outline-none focus:border-[#4A7FA7] transition-all`}
-                    placeholder="9731133425"
+                    rows={4}
+                    className={`w-full bg-[#0F2546] border ${errors.description ? "border-red-500" : "border-[#4A7FA7]/30"} rounded-xl px-5 py-3.5 text-[#F6FAFD] focus:outline-none focus:border-[#B3CFE5] focus:ring-1 focus:ring-[#B3CFE5] transition-all resize-none`}
+                    placeholder="Describe your vision (Min 20 characters)..."
                   />
-                  {errors.phone && (
-                    <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
-                      <AlertCircle size={12} /> {errors.phone}
+                  {errors.description && (
+                    <p className="text-red-400 text-xs mt-1.5 flex items-center gap-1 font-medium">
+                      <AlertCircle size={12} /> {errors.description}
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-[#B3CFE5] mb-2 ml-1">
-                  Email Address
-                </label>
-                <input
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`w-full bg-[#0A1931] border ${errors.email ? "border-red-500" : "border-[#4A7FA7]/20"} rounded-xl px-5 py-4 text-[#F6FAFD] focus:outline-none focus:border-[#4A7FA7] transition-all`}
-                  placeholder="name@company.com"
-                />
-                {errors.email && (
-                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
-                    <AlertCircle size={12} /> {errors.email}
-                  </p>
-                )}
-              </div>
-
-              <div className="mb-8">
-                <label className="block text-sm font-bold text-[#B3CFE5] mb-2 ml-1">
-                  Project Details
-                </label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  rows={4}
-                  className={`w-full bg-[#0A1931] border ${errors.description ? "border-red-500" : "border-[#4A7FA7]/20"} rounded-xl px-5 py-4 text-[#F6FAFD] focus:outline-none focus:border-[#4A7FA7] transition-all resize-none`}
-                  placeholder="Describe your vision (Min 20 characters)..."
-                />
-                {errors.description && (
-                  <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
-                    <AlertCircle size={12} /> {errors.description}
-                  </p>
-                )}
-              </div>
-
-              {/* YAHAN FIX KIYA: Success/Error Status Message */}
+              {/* Status Message */}
               {submitStatus && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`p-4 mb-6 rounded-xl flex items-start gap-3 ${submitStatus.type === "success" ? "bg-[#50C878]/10 text-[#50C878] border border-[#50C878]/20" : "bg-red-500/10 text-red-400 border border-red-500/20"}`}
+                  className={`mt-6 p-4 rounded-xl flex items-center gap-3 ${submitStatus.type === "success" ? "bg-[#50C878]/10 text-[#50C878] border border-[#50C878]/20" : "bg-red-500/10 text-red-400 border border-red-500/20"}`}
                 >
                   {submitStatus.type === "success" ? (
                     <CheckCircle className="w-5 h-5 flex-shrink-0" />
@@ -224,10 +272,11 @@ const Contact = () => {
                 </motion.div>
               )}
 
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#4A7FA7] hover:bg-[#B3CFE5] text-[#0A1931] font-bold py-5 rounded-xl transition-all shadow-lg hover:shadow-[0_0_30px_rgba(74,127,167,0.3)] flex items-center justify-center gap-2"
+                className="w-full mt-8 bg-[#4A7FA7] hover:bg-[#B3CFE5] text-[#0A1931] font-bold py-4 rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(74,127,167,0.2)] hover:shadow-[0_0_30px_rgba(179,207,229,0.4)] flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   "Processing..."

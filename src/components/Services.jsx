@@ -1,5 +1,7 @@
+// eslint-disable-next-line no-unused-vars
+import React from "react";
 import { motion } from "framer-motion";
-import { Code, Zap, BarChart3, Palette } from "lucide-react";
+import { Code, Smartphone, BarChart3, Layers } from "lucide-react";
 
 const services = [
   {
@@ -15,15 +17,15 @@ const services = [
     ],
   },
   {
-    icon: Zap,
-    title: "Business Automation",
+    icon: Smartphone, // Naya App icon add kiya
+    title: "Mobile App Development",
     description:
-      "Streamline operations with intelligent automation workflows that save time and reduce operational costs.",
+      "Creating premium, high-performance iOS and Android applications for seamless and native customer experiences.",
     features: [
-      "WhatsApp Integration",
-      "Google Sheets Sync",
-      "Firebase Backend",
-      "Auto Notifications",
+      "Cross-Platform Apps",
+      "Native Performance",
+      "Custom UI/UX",
+      "API Integration",
     ],
   },
   {
@@ -39,15 +41,15 @@ const services = [
     ],
   },
   {
-    icon: Palette,
-    title: "UI/UX & Brand Design",
+    icon: Layers, // UI/UX aur Automation ke combined look ke liye Layers icon
+    title: "Smart Automation & Brand Design",
     description:
-      "Creating stunning, user-centric designs that captivate audiences and elevate your brand presence.",
+      "Designing stunning user interfaces coupled with intelligent background workflows to save time and convert leads.",
     features: [
-      "Figma Design",
-      "Brand Identity",
-      "Prototyping",
-      "Design Systems",
+      "Figma Prototyping",
+      "Brand Identity System",
+      "WhatsApp & Sheets Sync",
+      "Auto Notifications",
     ],
   },
 ];

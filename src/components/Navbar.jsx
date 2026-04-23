@@ -1,5 +1,11 @@
-import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+// eslint-disable-next-line no-unused-vars
+import React, { useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
 import SenovaLogo from "./SenovaLogo";
 
@@ -12,23 +18,36 @@ const navLinks = [
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Framer motion ka in-built ultra-fast scroll tracker
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+
+    // 1. Background blur logic
+    setIsScrolled(latest > 20);
+
+    // 2. Hide/Show logic (Zero delay)
+    if (latest > previous && latest > 150) {
+      // Niche scroll kar rahe hain (150px se niche) -> Hide
+      setIsHidden(true);
+    } else {
+      // Upar scroll kar rahe hain ya top par hain -> Show
+      setIsHidden(false);
+    }
+  });
 
   return (
     <>
       <header className="w-full fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8">
         <motion.nav
           initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.5 }}
+          // YAHAN FIX HAI: Direct and fast animation parameters
+          animate={{ y: isHidden ? -100 : 0 }}
+          transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} // Bezier curve for buttery smoothness
           className={`max-w-7xl mx-auto transition-all duration-300 ${
             isScrolled
               ? "bg-[#0A1931]/80 backdrop-blur-xl rounded-xl border border-[#4A7FA7]/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
@@ -36,7 +55,7 @@ const Navbar = () => {
           }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between h-16 md:h-20">
-            {/* Naya Logo Section */}
+            {/* Logo Section */}
             <a
               href="#"
               className="flex items-center gap-2.5 cursor-pointer group"
@@ -52,6 +71,7 @@ const Navbar = () => {
               </div>
             </a>
 
+            {/* Desktop Links */}
             <div className="hidden md:flex items-center gap-10">
               {navLinks.map((link) => (
                 <a
@@ -64,6 +84,7 @@ const Navbar = () => {
               ))}
             </div>
 
+            {/* Desktop Button */}
             <div className="hidden md:block">
               <a href="#contact-form">
                 <button className="group flex items-center gap-2 px-5 py-2.5 bg-[#4A7FA7] hover:bg-[#B3CFE5] text-[#0A1931] rounded-lg transition-all duration-300 cursor-pointer shadow-[0_0_15px_rgba(74,127,167,0.3)]">
@@ -73,6 +94,7 @@ const Navbar = () => {
               </a>
             </div>
 
+            {/* Mobile Menu Toggle */}
             <button
               className="md:hidden text-[#F6FAFD] cursor-pointer"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -83,6 +105,7 @@ const Navbar = () => {
         </motion.nav>
       </header>
 
+      {/* Mobile Menu Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
