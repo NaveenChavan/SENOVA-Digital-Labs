@@ -9,10 +9,12 @@ import {
 import { Menu, X, ArrowRight } from "lucide-react";
 import SenovaLogo from "./SenovaLogo";
 
+// YAHAN FIX KIYA: 'Offer' ka href '#offer' (lowercase) kar diya
 const navLinks = [
   { name: "Services", href: "#services" },
   { name: "Portfolio", href: "#portfolio" },
   { name: "Founders", href: "#founders" },
+  { name: "Offer", href: "#offer" },
   { name: "Contact", href: "#contact-form" },
 ];
 
@@ -45,10 +47,11 @@ const Navbar = () => {
       <header className="w-full fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8">
         <motion.nav
           initial={{ y: -100 }}
-          // YAHAN FIX HAI: Direct and fast animation parameters
+          // Direct and fast animation parameters
           animate={{ y: isHidden ? -100 : 0 }}
           transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} // Bezier curve for buttery smoothness
-          className={`max-w-7xl mx-auto transition-all duration-300 ${
+          // `will-change-transform` lagaya taaki direct GPU par render ho
+          className={`max-w-7xl mx-auto transition-all duration-300 will-change-transform ${
             isScrolled
               ? "bg-[#0A1931]/80 backdrop-blur-xl rounded-xl border border-[#4A7FA7]/30 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
               : ""
@@ -112,7 +115,9 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-[#0A1931]/95 backdrop-blur-xl md:hidden pt-24"
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            // Mobile menu ko bhi GPU par bheja
+            className="fixed inset-0 z-40 bg-[#0A1931]/95 backdrop-blur-xl md:hidden pt-24 will-change-transform will-change-opacity"
           >
             <div className="flex flex-col items-center gap-8 p-6">
               {navLinks.map((link) => (
