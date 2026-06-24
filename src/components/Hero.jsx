@@ -1,0 +1,175 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { TypeAnimation } from "react-type-animation";
+import {
+  Phone,
+  ArrowRight,
+  Sparkles,
+  MessageCircle,
+  Terminal,
+  Gift,
+} from "lucide-react";
+
+const FloatingBadge = ({ children, delay = 0, className = "" }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5, delay }}
+    className={`absolute hidden xl:flex will-change-transform ${className}`}
+  >
+    <motion.div
+      animate={{ y: [-5, 5, -5] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay }}
+      className="flex items-center gap-2 bg-[#1A3D63]/50 backdrop-blur-md border border-[#4A7FA7]/30 rounded-full px-4 py-2 2xl:px-6 2xl:py-3 shadow-[0_0_15px_rgba(74,127,167,0.15)]"
+    >
+      {children}
+    </motion.div>
+  </motion.div>
+);
+
+const Hero = () => {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 bg-[#0A1931]">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{ opacity: [0.1, 0.15, 0.1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#4A7FA7] rounded-full blur-[120px] will-change-opacity"
+        />
+        <motion.div
+          animate={{ opacity: [0.2, 0.3, 0.2] }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+          className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#1A3D63] rounded-full blur-[100px] will-change-opacity"
+        />
+      </div>
+
+      <FloatingBadge delay={0.8} className="top-1/4 left-10">
+        <Sparkles className="w-4 h-4 text-[#B3CFE5]" />
+        <span className="text-sm 2xl:text-lg text-[#F6FAFD]">
+          Premium Quality
+        </span>
+      </FloatingBadge>
+      <FloatingBadge delay={1.2} className="top-1/3 right-10">
+        <span className="w-2 h-2 bg-[#50C878] rounded-full animate-pulse shadow-[0_0_10px_#50C878]" />
+        <span className="text-sm 2xl:text-lg text-[#F6FAFD]">24/7 Support</span>
+      </FloatingBadge>
+      <FloatingBadge delay={1.6} className="bottom-1/3 left-16">
+        <Terminal className="w-4 h-4 text-[#B3CFE5]" />
+        <span className="text-[#B3CFE5] font-semibold 2xl:text-xl">100%</span>
+        <span className="text-sm 2xl:text-lg text-[#F6FAFD]/80">
+          Scalable Code
+        </span>
+      </FloatingBadge>
+
+      <div className="relative z-10 w-[95%] max-w-[1440px] 2xl:max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center justify-center text-center w-full"
+        >
+          {/* Fixed Badge for Mobile */}
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-[#1A3D63]/60 border border-[#4A7FA7]/40 rounded-full px-3 py-1.5 sm:px-5 sm:py-2.5 2xl:px-8 2xl:py-4 mb-6 sm:mb-8 shadow-[0_0_15px_rgba(74,127,167,0.2)] max-w-full">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#B3CFE5] rounded-full animate-pulse shrink-0" />
+            <span className="text-[10px] sm:text-sm 2xl:text-xl text-[#B3CFE5] font-medium tracking-wide truncate">
+              SENOVA Digital Innovation Lab
+            </span>
+          </div>
+
+          <div className="mb-6 w-full max-w-4xl 2xl:max-w-6xl mx-auto px-2">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-bold text-[#F6FAFD] leading-tight tracking-tight">
+              We Build
+            </h1>
+
+            {/* Fixed Animation Container */}
+            <div className="min-h-[60px] sm:h-[60px] md:h-[80px] lg:h-[96px] 2xl:h-[120px] flex items-center justify-center my-2 w-full">
+              <span className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl font-bold text-[#B3CFE5] inline-block">
+                <TypeAnimation
+                  sequence={[
+                    "High-Performance Systems",
+                    2000,
+                    "Automation Workflows",
+                    2000,
+                    "Scalable SaaS Products",
+                    2000,
+                    "Your Digital Future",
+                    2000,
+                  ]}
+                  wrapper="span"
+                  speed={50}
+                  repeat={Infinity}
+                />
+              </span>
+            </div>
+
+            <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-[#F6FAFD] opacity-90 mt-2">
+              To Get You More Customers
+            </h2>
+          </div>
+
+          <p className="text-sm sm:text-lg md:text-xl 2xl:text-3xl text-[#B3CFE5]/80 max-w-2xl 2xl:max-w-4xl mx-auto mb-10 sm:mb-12 leading-relaxed text-center px-4">
+            Transforming businesses into tech-driven powerhouses with clean
+            code, premium design, and intelligent automation.
+          </p>
+
+          {/* <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 sm:mb-14 w-full px-4">
+            <a href="#offer" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto group flex items-center justify-center gap-2 bg-[#50C878] hover:bg-[#3ea05e] text-[#0A1931] font-bold px-6 py-3.5 sm:px-8 2xl:px-10 2xl:py-5 2xl:text-xl rounded-lg transition-all duration-300 cursor-pointer shadow-[0_0_20px_rgba(80,200,120,0.4)] hover:-translate-y-1">
+                <Gift className="w-5 h-5 2xl:w-6 2xl:h-6" />
+                <span>View Launch Offer</span>
+              </button>
+            </a>
+            <a href="#contact-form" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto group flex items-center justify-center gap-2 bg-[#4A7FA7] hover:bg-[#B3CFE5] text-[#0A1931] font-bold px-6 py-3.5 sm:px-8 2xl:px-10 2xl:py-5 2xl:text-xl rounded-lg transition-all duration-300 cursor-pointer shadow-[0_0_20px_rgba(74,127,167,0.4)] hover:-translate-y-1">
+                <span>Start Your Project</span>
+                <ArrowRight className="w-5 h-5 2xl:w-6 2xl:h-6 group-hover:translate-x-1 transition-transform duration-200" />
+              </button>
+            </a>
+          </div> */}
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12">
+            <a
+              href="tel:+919731133425"
+              className="flex items-center gap-3 text-[#B3CFE5]/70 hover:text-[#B3CFE5] transition-colors duration-200 cursor-pointer group"
+            >
+              <div className="w-10 h-10 2xl:w-14 2xl:h-14 rounded-full bg-[#1A3D63] border border-[#4A7FA7]/40 flex items-center justify-center group-hover:border-[#B3CFE5] group-hover:shadow-[0_0_15px_rgba(74,127,167,0.4)] transition-all duration-300">
+                <Phone className="w-4 h-4 2xl:w-6 2xl:h-6 text-[#B3CFE5]" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs 2xl:text-sm text-[#B3CFE5]/50">Call Us</p>
+                <p className="text-sm 2xl:text-lg font-medium text-[#F6FAFD]">
+                  +91 9731133425
+                </p>
+              </div>
+            </a>
+            <a
+              href="https://wa.me/918088366098"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-[#B3CFE5]/70 hover:text-[#B3CFE5] transition-colors duration-200 cursor-pointer group"
+            >
+              <div className="w-10 h-10 2xl:w-14 2xl:h-14 rounded-full bg-[#1A3D63] border border-[#4A7FA7]/40 flex items-center justify-center group-hover:border-[#B3CFE5] group-hover:shadow-[0_0_15px_rgba(74,127,167,0.4)] transition-all duration-300">
+                <MessageCircle className="w-4 h-4 2xl:w-6 2xl:h-6 text-[#B3CFE5]" />
+              </div>
+              <div className="text-left">
+                <p className="text-xs 2xl:text-sm text-[#B3CFE5]/50">
+                  WhatsApp
+                </p>
+                <p className="text-sm 2xl:text-lg font-medium text-[#F6FAFD]">
+                  +91 8088366098
+                </p>
+              </div>
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
