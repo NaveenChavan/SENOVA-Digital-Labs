@@ -9,6 +9,10 @@
   --color-text-primary: #f6fafd;
   --color-text-secondary: #b3cfe5;
   --color-border: #4a7fa7;
+
+  /* Custom breakpoints for Tailwind v4 */
+  --breakpoint-3xl: 1920px;
+  --breakpoint-4k: 2560px;
 }
 
 * {
@@ -20,6 +24,7 @@
 html {
   scroll-behavior: smooth;
   background-color: #0a1931;
+  font-size: clamp(16px, 15.6px + 0.12vw, 18px);
 }
 
 body {
@@ -32,7 +37,145 @@ body {
   overflow-x: hidden;
 }
 
-/* YAHAN FIX HAI: Naya Blue-Silver Text Gradient */
+/* ============================================
+   UNIFIED RESPONSIVE CONTAINER SYSTEM
+   ============================================
+   Strategy: Minimal safe margins. Content fills the viewport.
+   Only caps max-width on ultra-large screens (1920px+).
+   
+   Mobile: 16-20px padding (tight but safe)
+   Tablet: 24px padding
+   Laptop/Desktop: 32-40px padding (subtle outer margin)
+   2K+: max-width cap at 1920px with elegant centering
+   ============================================ */
+.responsive-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 480px) {
+  .responsive-container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .responsive-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .responsive-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .responsive-container {
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  .responsive-container {
+    max-width: 1840px;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 2560px) {
+  .responsive-container {
+    max-width: 1920px;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* ============================================
+   FLUID TYPOGRAPHY SCALE
+   ============================================
+   Clean, professional scale with proper line-heights.
+   No text will overlap — generous leading throughout.
+   ============================================ */
+
+/* Hero H1 - Largest heading */
+.fluid-heading-xl {
+  font-size: clamp(2.5rem, 2rem + 2.5vw, 5rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+/* Section H2 headings */
+.fluid-heading-lg {
+  font-size: clamp(1.75rem, 1.4rem + 1.5vw, 3.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* Sub-headings (H3 level) */
+.fluid-heading-md {
+  font-size: clamp(1.25rem, 1.1rem + 0.75vw, 2rem);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+/* Body text large */
+.fluid-body-lg {
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);
+  line-height: 1.75;
+  letter-spacing: -0.01em;
+}
+
+/* Body text base */
+.fluid-body {
+  font-size: clamp(0.875rem, 0.85rem + 0.12vw, 1rem);
+  line-height: 1.7;
+}
+
+/* Small/caption text */
+.fluid-caption {
+  font-size: clamp(0.75rem, 0.73rem + 0.08vw, 0.875rem);
+  line-height: 1.5;
+}
+
+/* ============================================
+   TEXT WRAP BALANCE FOR HEADINGS
+   ============================================ */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+/* ============================================
+   EXISTING STYLES (preserved)
+   ============================================ */
+
+/* Blue-Silver Text Gradient */
 .text-gradient {
   background-clip: text;
   -webkit-background-clip: text;
@@ -40,13 +183,13 @@ body {
   background-image: linear-gradient(to right, #4a7fa7, #b3cfe5, #f6fafd);
 }
 
-/* Jab text select karein toh blue highlight aaye */
+/* Selection highlight */
 ::selection {
   background-color: rgba(179, 207, 229, 0.2);
   color: #f6fafd;
 }
 
-/* Custom Scrollbar for Premium Look */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -63,4 +206,23 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #4a7fa7;
+}
+
+/* ============================================
+   RESPONSIVE IMAGE UTILITY
+   ============================================ */
+.responsive-image-contain {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ============================================
+   GLOBAL OVERFLOW SAFETY
+   ============================================ */
+#root {
+  overflow-x: hidden;
+  width: 100%;
 }
