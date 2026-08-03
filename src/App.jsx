@@ -7,6 +7,7 @@ import Offer from "./components/Offer";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import NotifyButton from "./components/NotifyButton";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <NotifyButton />
     </div>
   );
 }
