@@ -136,7 +136,7 @@ const Contact = () => {
                   </div>
                 </a>
                 <a
-                  href="mailto:naveenchavan29@gmail.com"
+                  href="mailto:info@senovadigital.xyz"
                   className="flex items-start gap-4 group cursor-pointer w-full"
                 >
                   <div className="w-12 h-12 3xl:w-14 3xl:h-14 shrink-0 rounded-2xl bg-[#0A1931] flex items-center justify-center border border-[#4A7FA7]/30 group-hover:border-[#B3CFE5] group-hover:bg-[#4A7FA7] transition-all duration-300 shadow-md">
@@ -147,7 +147,7 @@ const Contact = () => {
                       Email Address
                     </p>
                     <p className="text-[#F6FAFD] font-semibold text-sm md:text-base 3xl:text-lg break-all group-hover:text-[#B3CFE5] transition-colors">
-                      naveenchavan29@gmail.com
+                      info@senovadigital.xyz
                     </p>
                   </div>
                 </a>

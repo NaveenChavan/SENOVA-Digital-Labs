@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -6,13 +6,14 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const navLinks = [
-  { name: "Services", href: "#services" },
-  { name: "Portfolio", href: "#portfolio" },
-  { name: "Founders", href: "#founders" },
-  { name: "Offer", href: "#offer" },
-  { name: "Contact", href: "#contact-form" },
+  { name: "Services", href: "/#services" },
+  { name: "Portfolio", href: "/#portfolio" },
+  { name: "Founders", href: "/#founders" },
+  { name: "Offer", href: "/#offer" },
+  { name: "Contact", href: "/#contact-form" },
 ];
 
 const Navbar = () => {
@@ -42,8 +43,8 @@ const Navbar = () => {
         >
           <div className="w-full px-3 sm:px-4 lg:px-6 3xl:px-8 flex items-center justify-between h-16 md:h-[4.5rem] 3xl:h-20 4k:h-24">
             {/* Logo Section */}
-            <a
-              href="#"
+            <Link
+              to="/"
               className="flex items-center gap-2.5 cursor-pointer group"
             >
               <img
@@ -59,31 +60,31 @@ const Navbar = () => {
                   Digital Labs
                 </span>
               </div>
-            </a>
+            </Link>
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8 lg:gap-10 3xl:gap-12 4k:gap-14">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
+                  to={link.href}
                   className="text-sm 3xl:text-[15px] 4k:text-base font-medium text-[#B3CFE5]/80 hover:text-[#B3CFE5] transition-colors duration-200 cursor-pointer"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
 
             {/* CTA Button */}
             <div className="hidden md:block">
-              <a href="#contact-form">
+              <Link to="/#contact-form">
                 <button className="group flex items-center gap-2 px-5 py-2.5 3xl:px-6 3xl:py-3 4k:px-7 4k:py-3.5 bg-[#4A7FA7] hover:bg-[#B3CFE5] text-[#0A1931] rounded-lg transition-all duration-300 cursor-pointer shadow-[0_0_15px_rgba(74,127,167,0.3)]">
                   <span className="text-sm 3xl:text-[15px] 4k:text-base font-bold">
                     Start project
                   </span>
                   <ArrowRight className="w-4 h-4 3xl:w-[18px] 3xl:h-[18px] group-hover:translate-x-1 transition-transform duration-200" />
                 </button>
-              </a>
+              </Link>
             </div>
 
             {/* Mobile Menu Toggle */}
@@ -108,17 +109,17 @@ const Navbar = () => {
           >
             <div className="flex flex-col items-center gap-8 p-6">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
+                  to={link.href}
                   className="text-2xl font-semibold text-[#F6FAFD] hover:text-[#4A7FA7] transition-colors duration-200 cursor-pointer"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
-              <a
-                href="#contact-form"
+              <Link
+                to="/#contact-form"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-full max-w-xs"
               >
@@ -126,7 +127,7 @@ const Navbar = () => {
                   <span className="font-bold">Start project</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}

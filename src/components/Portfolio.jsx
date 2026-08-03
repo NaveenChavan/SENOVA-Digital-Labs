@@ -1,26 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const projects = [
-  {
-    id: 0,
-    title: "SENOVA AI Dashboard",
-    description:
-      "Transform raw business data into actionable insights. Upload sales reports and instantly get AI-powered analytics, financial reports, inventory intelligence, revenue forecasts, and interactive dashboards—all in one platform.",
-    liveUrl: "#",
-    staticImage: "/assets/DASHBOARD.png",
-    comingSoon: true,
-  },
-  {
-    id: -1,
-    title: "SENOVA Gym Management System",
-    description:
-      "A complete gym management solution designed for modern fitness centers. Manage members, attendance, billing, subscriptions, and automated WhatsApp notifications with an intelligent offline-first desktop application.",
-    liveUrl: "#",
-    staticImage: "/assets/GYM.png",
-    comingSoon: true,
-  },
   {
     id: 1,
     title: "FitBiteCafe",
@@ -95,13 +78,8 @@ const ProjectImage = ({ project }) => {
     );
   }
 
-  const aspectClass = project.comingSoon ? "aspect-[3/2]" : "aspect-video";
-  const fitClass = project.comingSoon ? "object-contain" : "object-cover";
-
   return (
-    <div
-      className={`${aspectClass} w-full relative overflow-hidden bg-[#0A1931] rounded-t-lg border-b border-[#4A7FA7]/30`}
-    >
+    <div className="aspect-video w-full relative overflow-hidden bg-[#0A1931] rounded-t-lg border-b border-[#4A7FA7]/30">
       {!imageLoaded && (
         <div className="absolute inset-0 bg-[#1A3D63] animate-pulse" />
       )}
@@ -120,7 +98,7 @@ const ProjectImage = ({ project }) => {
         <img
           src={imageSrc}
           alt={`${project.title} screenshot`}
-          className={`w-full h-full ${fitClass} transition-all duration-500 ${!project.comingSoon ? "group-hover:scale-105" : ""} ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-105 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
           onLoad={handleLoad}
           onError={handleError}
           loading="lazy"
@@ -132,25 +110,6 @@ const ProjectImage = ({ project }) => {
 
 const ProjectCard = ({ project, index }) => {
   const isLive = project.liveUrl && project.liveUrl !== "#";
-
-  if (project.comingSoon) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-30px" }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="group relative bg-[#1A3D63] rounded-xl border border-[#4A7FA7]/30 overflow-hidden shadow-lg transition-all duration-300 hover:border-[#B3CFE5] hover:shadow-[0_0_20px_rgba(74,127,167,0.3)]"
-      >
-        <ProjectImage project={project} />
-        <div className="p-5 3xl:p-7">
-          <p className="text-sm 3xl:text-base text-[#B3CFE5]/80 leading-relaxed">
-            {project.description}
-          </p>
-        </div>
-      </motion.div>
-    );
-  }
 
   return (
     <motion.a
@@ -243,6 +202,23 @@ const Portfolio = () => {
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="flex justify-center mt-10 3xl:mt-12 w-full"
+        >
+          <Link to="/upcoming-projects">
+            <button className="group inline-flex items-center gap-2 text-[#4A7FA7] hover:text-[#B3CFE5] transition-colors duration-200 cursor-pointer">
+              <span className="font-medium 3xl:text-lg">
+                See what's coming next
+              </span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
+            </button>
+          </Link>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

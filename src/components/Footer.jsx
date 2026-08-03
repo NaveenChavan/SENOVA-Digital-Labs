@@ -1,16 +1,8 @@
-import React from "react";
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  const scrollToTop = (e) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
   return (
     <footer className="bg-[#0A1931] border-t border-[#4A7FA7]/20 overflow-hidden relative mt-12">
@@ -22,9 +14,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8 3xl:gap-12">
           {/* Column 1: Brand & MSME */}
           <div className="text-center md:text-left flex flex-col items-center md:items-start">
-            <a
-              href="#"
-              onClick={scrollToTop}
+            <Link
+              to="/"
               className="inline-flex items-center gap-2.5 mb-5 cursor-pointer group"
             >
               <img
@@ -40,7 +31,7 @@ const Footer = () => {
                   Digital Labs
                 </span>
               </div>
-            </a>
+            </Link>
 
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#1A3D63]/40 border border-[#4A7FA7]/30 rounded-lg mb-6 shadow-[0_0_15px_rgba(74,127,167,0.1)]">
               <svg
@@ -126,7 +117,7 @@ const Footer = () => {
               </a>
 
               <a
-                href="mailto:naveenchavan29@gmail.com"
+                href="mailto:info@senovadigital.xyz"
                 className="flex items-center gap-3 text-[#B3CFE5]/80 hover:text-[#B3CFE5] transition-colors duration-200 cursor-pointer group"
               >
                 <div className="w-9 h-9 3xl:w-10 3xl:h-10 rounded-full bg-[#1A3D63] border border-[#4A7FA7]/40 flex items-center justify-center group-hover:border-[#B3CFE5] group-hover:shadow-[0_0_10px_rgba(74,127,167,0.3)] transition-all duration-300">
@@ -167,15 +158,15 @@ const Footer = () => {
                 "UI/UX Design",
               ].map((item) => (
                 <li key={item}>
-                  <a
-                    href="#services"
+                  <Link
+                    to="/#services"
                     className="group flex items-center text-[#B3CFE5]/70 hover:text-[#B3CFE5] transition-all duration-300 text-sm 3xl:text-base font-medium"
                   >
                     <ChevronRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-[#4A7FA7] mr-1 hidden md:block" />
                     <span className="group-hover:translate-x-1 transition-transform duration-300">
                       {item}
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -188,20 +179,20 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4 3xl:space-y-5 flex flex-col items-center md:items-start mb-8">
               {[
-                { name: "Portfolio", href: "#portfolio" },
-                { name: "Founders", href: "#founders" },
-                { name: "Contact Us", href: "#contact-form" },
+                { name: "Portfolio", href: "/#portfolio" },
+                { name: "Founders", href: "/#founders" },
+                { name: "Contact Us", href: "/#contact-form" },
               ].map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="group flex items-center text-[#B3CFE5]/70 hover:text-[#B3CFE5] transition-all duration-300 text-sm 3xl:text-base font-medium"
                   >
                     <ChevronRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-[#4A7FA7] mr-1 hidden md:block" />
                     <span className="group-hover:translate-x-1 transition-transform duration-300">
                       {link.name}
                     </span>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
