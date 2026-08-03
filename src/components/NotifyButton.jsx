@@ -50,6 +50,11 @@ const NotifyButton = () => {
       const registration = await navigator.serviceWorker.register(
         "/firebase-messaging-sw.js",
       );
+      // .register() can resolve before a worker is actually active, and
+      // getToken() needs an active registration to access pushManager.
+      // navigator.serviceWorker.ready only resolves once a worker for this
+      // scope is active.
+      await navigator.serviceWorker.ready;
 
       const messaging = await getMessagingInstance();
       if (!messaging) {
