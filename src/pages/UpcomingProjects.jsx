@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, X } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const upcomingProjects = [
@@ -129,22 +129,17 @@ const UpcomingProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   return (
-    <section className="relative pt-28 sm:pt-32 pb-24 md:pb-32 lg:pb-36 3xl:pb-40 bg-[#0A1931] min-h-screen">
+    <section className="relative pb-24 md:pb-32 lg:pb-36 3xl:pb-40 bg-[#0A1931] min-h-screen">
+      {/* Fixed-height spacer to clear the fixed navbar. Uses an explicit
+          pixel height (not a Tailwind padding utility) so it can't be
+          affected by breakpoint-dependent navbar height changes. */}
+      <div style={{ height: "120px" }} aria-hidden="true" />
+
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[#4A7FA7]/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="relative responsive-container">
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-[#4A7FA7] hover:text-[#B3CFE5] transition-colors duration-200 mb-10 3xl:mb-14"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm 3xl:text-base font-medium">
-            Back to home
-          </span>
-        </Link>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -152,9 +147,6 @@ const UpcomingProjects = () => {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-center text-center mb-14 md:mb-16 3xl:mb-20 w-full"
         >
-          <span className="text-[#4A7FA7] text-sm 3xl:text-base font-semibold tracking-wider uppercase mb-4 block">
-            What's Next
-          </span>
           <h2 className="fluid-heading-lg font-bold text-[#F6FAFD] mb-4 tracking-tight">
             Upcoming <br />
             <span className="text-[#B3CFE5]">Projects</span>
