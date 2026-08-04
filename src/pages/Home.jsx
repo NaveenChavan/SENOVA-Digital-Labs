@@ -1,4 +1,5 @@
 import Hero from "../components/Hero";
+import UpcomingBanner from "../components/UpcomingBanner";
 import FoundersSection from "../components/FoundersSection";
 import Services from "../components/Services";
 import Portfolio from "../components/Portfolio";
@@ -9,6 +10,7 @@ const Home = () => {
   return (
     <>
       <Hero />
+      <UpcomingBanner />
       <FoundersSection />
       <Services />
       <Portfolio />
