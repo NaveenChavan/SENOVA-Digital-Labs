@@ -13,7 +13,7 @@ const projects = [
     result: "60% management time saved",
     techStack: ["React", "WhatsApp API", "Firebase", "UI/UX"],
     liveUrl: "https://gleamstudio.vercel.app/",
-    staticImage: "/assets/GleamStudio.png",
+    staticImage: "/assets/GleamStudio.webp",
     size: "large",
   },
   {
@@ -24,7 +24,7 @@ const projects = [
     result: "200% increase in inquiries",
     techStack: ["React", "Tailwind", "SEO", "Animations"],
     liveUrl: "https://mjfitnessclub.vercel.app/",
-    staticImage: "/assets/MJFitness.png",
+    staticImage: "/assets/MJFitness.webp",
     size: "small",
   },
   {
@@ -35,7 +35,7 @@ const projects = [
     result: "10,000+ active users",
     techStack: ["React", "Charts", "Firebase", "Analytics"],
     liveUrl: "https://fit-bite-cafe.vercel.app/",
-    staticImage: "/assets/FitbiteCafe.png",
+    staticImage: "/assets/FitbiteCafe.webp",
     size: "small",
   },
   {
@@ -46,7 +46,7 @@ const projects = [
     result: "Featured in local news",
     techStack: ["E-commerce", "React", "Payment Integration"],
     liveUrl: "https://golden-crumb-bakery-nine.vercel.app/",
-    staticImage: "/assets/GoldenCrumbBakery.png",
+    staticImage: "/assets/GoldenCrumbBakery.webp",
     size: "small",
   },
 ];

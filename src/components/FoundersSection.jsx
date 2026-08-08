@@ -16,7 +16,7 @@ const founders = [
     role: "Tech Lead & Partnerships",
     bio: "A driven Full-Stack Developer with a deep passion for clean UI/UX and product architecture. Naveen leverages advanced web technologies to build scalable digital solutions for businesses globally, while expertly managing client partnerships to align technical execution with business strategy.",
     icon: Code,
-    image: "/assets/Naveen.png",
+    image: "/assets/Naveen.webp",
     linkedin: "https://www.linkedin.com/in/naveen-chavan-8852a9368/",
   },
   {
@@ -25,7 +25,7 @@ const founders = [
     role: "Systems Architect & Operations",
     bio: "A precision-focused Systems Architect specializing in backend infrastructure and intelligent business automation. Shrihari designs high-performance APIs and automated workflows using Firebase and cloud technologies, ensuring that client systems are robust, secure, and prepared for exponential scale.",
     icon: Cloud,
-    image: "/assets/Shrihari.png",
+    image: "/assets/Shrihari.webp",
     linkedin: "https://www.linkedin.com/in/shrihari-124323340/",
   },
 ];
@@ -45,6 +45,7 @@ const PlaceholderPortrait = ({ name }) => (
 const FounderRow = ({ founder, index }) => {
   const Icon = founder.icon;
   const [imageFailed, setImageFailed] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const reversed = index % 2 === 1;
 
   return (
@@ -62,12 +63,20 @@ const FounderRow = ({ founder, index }) => {
         <div className="group relative w-52 h-52 sm:w-60 sm:h-60">
           <div className="absolute inset-0 rounded-[2rem] bg-[#2563EB]/25 blur-2xl scale-105 opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
           <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-[#22304A] group-hover:border-[#2563EB]/50 transition-colors duration-500 shadow-2xl">
+            {!imageLoaded && !imageFailed && (
+              <div className="absolute inset-0 bg-[#131C2E] animate-pulse" />
+            )}
             {!imageFailed ? (
               <img
                 src={founder.image}
                 alt={founder.name}
+                width="240"
+                height="240"
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+                onLoad={() => setImageLoaded(true)}
                 onError={() => setImageFailed(true)}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
               />
             ) : (
               <PlaceholderPortrait name={founder.name} />

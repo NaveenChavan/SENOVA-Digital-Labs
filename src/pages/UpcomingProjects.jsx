@@ -17,7 +17,7 @@ const upcomingProjects = [
       "Interactive chart studio",
       "CA-style financial reports",
     ],
-    image: "/assets/DASHBOARD.png",
+    image: "/assets/DASHBOARD.webp",
   },
   {
     id: "gym",
@@ -31,7 +31,7 @@ const upcomingProjects = [
       "WhatsApp automation",
       "Reports & exports (PDF/CSV)",
     ],
-    image: "/assets/GYM.png",
+    image: "/assets/GYM.webp",
   },
 ];
 
@@ -102,6 +102,7 @@ const ProjectModal = ({ project, onClose }) => {
 };
 
 const UpcomingProjectCard = ({ project, index, onSelect }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   return (
     <motion.button
       type="button"
@@ -117,11 +118,14 @@ const UpcomingProjectCard = ({ project, index, onSelect }) => {
         {String(index + 1).padStart(2, "0")}
       </span>
       <div className="aspect-[3/2] w-full relative overflow-hidden bg-[#0B1120] rounded-t-[1.5rem]">
+        {!imageLoaded && <div className="absolute inset-0 bg-[#131C2E] animate-pulse" />}
         <img
           src={project.image}
           alt={`${project.title} preview`}
-          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
           loading="lazy"
+          decoding="async"
+          onLoad={() => setImageLoaded(true)}
+          className={`w-full h-full object-contain transition-all duration-500 group-hover:scale-[1.02] ${imageLoaded ? "opacity-100" : "opacity-0"}`}
         />
         <div className="absolute inset-0 bg-[#0B1120]/0 group-hover:bg-[#0B1120]/20 transition-colors duration-300" />
       </div>

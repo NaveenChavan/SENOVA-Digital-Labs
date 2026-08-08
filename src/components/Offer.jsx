@@ -137,8 +137,10 @@ const Offer = () => {
           >
             <div className="w-full bg-[#131C2E] border-2 border-dashed border-[#22304A] rounded-3xl flex items-center justify-center overflow-hidden shadow-2xl relative group p-5 sm:p-7 3xl:p-9">
               <img
-                src="/assets/Offer.png"
+                src="/assets/Offer.webp"
                 alt="SENOVA Launch Offer"
+                loading="lazy"
+                decoding="async"
                 className="responsive-image-contain min-h-[280px] sm:min-h-[320px] md:min-h-[400px] lg:min-h-[450px] 3xl:min-h-[520px] max-h-[700px] 3xl:max-h-[800px] transition-transform duration-500 hover:scale-[1.03] rounded-xl"
               />
               <div className="absolute inset-0 z-[-1] flex flex-col items-center justify-center p-8">

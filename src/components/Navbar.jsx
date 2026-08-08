@@ -89,8 +89,12 @@ const Navbar = () => {
             >
               <span className="w-11 h-11 md:w-12 md:h-12 rounded-lg flex items-center justify-center shrink-0 overflow-hidden">
                 <img
-                  src="/assets/logo.png"
+                  src="/assets/logo.webp"
                   alt="Senova Digital Labs logo"
+                  width="48"
+                  height="51"
+                  fetchpriority="high"
+                  decoding="async"
                   className="w-full h-full object-contain"
                 />
               </span>

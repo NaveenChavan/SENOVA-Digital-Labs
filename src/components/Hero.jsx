@@ -137,8 +137,12 @@ const Hero = () => {
                 className="relative w-[160px] h-[160px] sm:w-[220px] sm:h-[220px] md:w-[260px] md:h-[260px] flex items-center justify-center"
               >
                 <img
-                  src="/assets/logo.png"
+                  src="/assets/logo.webp"
                   alt="Senova Digital Labs"
+                  width="260"
+                  height="275"
+                  fetchpriority="high"
+                  decoding="async"
                   className="w-full h-full object-contain drop-shadow-[0_0_25px_rgba(37,99,235,0.45)]"
                 />
               </motion.div>
