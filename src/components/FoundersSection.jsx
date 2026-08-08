@@ -16,7 +16,7 @@ const founders = [
     role: "Tech Lead & Partnerships",
     bio: "A driven Full-Stack Developer with a deep passion for clean UI/UX and product architecture. Naveen leverages advanced web technologies to build scalable digital solutions for businesses globally, while expertly managing client partnerships to align technical execution with business strategy.",
     icon: Code,
-    image: "/assets/Naveen.png",
+    image: "/assets/naveen.png",
     linkedin: "https://www.linkedin.com/in/naveen-chavan-8852a9368/",
   },
   {
@@ -25,7 +25,7 @@ const founders = [
     role: "Systems Architect & Operations",
     bio: "A precision-focused Systems Architect specializing in backend infrastructure and intelligent business automation. Shrihari designs high-performance APIs and automated workflows using Firebase and cloud technologies, ensuring that client systems are robust, secure, and prepared for exponential scale.",
     icon: Cloud,
-    image: "/assets/Shrihari.png",
+    image: "/assets/shrihari.png",
     linkedin: "https://www.linkedin.com/in/shrihari-124323340/",
   },
 ];
