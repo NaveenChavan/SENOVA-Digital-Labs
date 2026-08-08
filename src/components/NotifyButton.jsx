@@ -104,20 +104,20 @@ const NotifyButton = () => {
       whileHover={status === "denied" ? {} : { scale: 1.1 }}
       whileTap={status === "denied" ? {} : { scale: 0.9 }}
       transition={{ type: "spring", stiffness: 200, damping: 15 }}
-      className={`fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(74,127,167,0.4)] hover:shadow-[0_0_30px_rgba(74,127,167,0.7)] cursor-pointer group transition-shadow duration-300 ${
-        status === "granted" ? "bg-[#4A7FA7]" : "bg-[#1A3D63]"
+      className={`fixed bottom-24 sm:bottom-6 left-6 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.7)] cursor-pointer group transition-shadow duration-300 ${
+        status === "granted" ? "bg-[#2563EB]" : "bg-[#131C2E] border border-[#22304A]"
       } ${status === "denied" ? "opacity-70 cursor-not-allowed" : ""}`}
     >
       <Icon className="w-7 h-7 text-white" />
 
-      <span className="absolute left-full ml-4 px-4 py-2 bg-[#1A3D63] border border-[#4A7FA7]/50 rounded-lg text-sm font-semibold text-[#F6FAFD] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-[0_0_15px_rgba(10,25,49,0.5)]">
+      <span className="absolute left-full ml-4 px-4 py-2 bg-[#131C2E] border border-[#22304A] rounded-lg text-sm font-semibold text-white whitespace-nowrap opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0 transition-all duration-300 pointer-events-none shadow-[0_0_15px_rgba(0,0,0,0.5)]">
         {tooltip}
       </span>
 
       {status === "idle" && (
         <span className="absolute -top-1 -right-1 flex h-4 w-4">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#4A7FA7] border-2 border-[#0A1931]"></span>
+          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#2563EB] border-2 border-[#0B1120]"></span>
         </span>
       )}
     </motion.button>

@@ -54,7 +54,7 @@ const ProjectModal = ({ project, onClose }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[60] bg-[#0A1931]/85 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+      className="fixed inset-0 z-[60] bg-[#0B1120]/85 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
       onClick={onClose}
     >
       <motion.div
@@ -63,34 +63,34 @@ const ProjectModal = ({ project, onClose }) => {
         exit={{ opacity: 0, y: 20, scale: 0.97 }}
         transition={{ duration: 0.2 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-xl 3xl:max-w-2xl bg-[#1A3D63] rounded-2xl border border-[#4A7FA7]/40 shadow-[0_0_40px_rgba(74,127,167,0.3)] max-h-[90vh] flex flex-col"
+        className="relative w-full max-w-xl 3xl:max-w-2xl bg-[#131C2E] rounded-3xl border border-[#22304A] shadow-[0_0_40px_rgba(37,99,235,0.2)] max-h-[90vh] flex flex-col overflow-hidden"
       >
-        {/* Header: title and close button side by side, own row */}
-        <div className="flex items-start justify-between gap-4 p-6 sm:p-8 3xl:p-10 pb-0">
-          <h3 className="text-xl sm:text-2xl 3xl:text-3xl font-bold text-[#F6FAFD] leading-snug">
+        <div className="noise-overlay" />
+        <div className="flex items-start justify-between gap-4 p-7 sm:p-9 3xl:p-11 pb-0">
+          <h3 className="text-xl sm:text-2xl 3xl:text-3xl font-display font-bold text-white leading-snug">
             {project.title}
           </h3>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="w-10 h-10 shrink-0 rounded-full bg-[#0A1931]/80 border border-[#4A7FA7]/40 flex items-center justify-center text-[#B3CFE5] hover:border-[#B3CFE5] hover:text-[#F6FAFD] transition-colors duration-200 cursor-pointer"
+            className="w-10 h-10 shrink-0 rounded-full bg-[#0B1120] border border-[#22304A] flex items-center justify-center text-[#9999A1] hover:border-[#2563EB]/60 hover:text-white transition-colors duration-200 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-6 sm:p-8 3xl:p-10 pt-4 sm:pt-5 overflow-y-auto">
-          <p className="text-base sm:text-lg 3xl:text-xl text-[#B3CFE5]/85 leading-relaxed mb-6">
+        <div className="p-7 sm:p-9 3xl:p-11 pt-5 sm:pt-6 overflow-y-auto">
+          <p className="text-base sm:text-lg 3xl:text-xl text-[#9999A1] leading-relaxed mb-7">
             {project.description}
           </p>
-          <ul className="space-y-3">
+          <ul className="space-y-4">
             {project.features.map((feature) => (
               <li
                 key={feature}
-                className="flex items-center gap-3 text-base sm:text-lg 3xl:text-xl text-[#F6FAFD]"
+                className="flex items-center gap-3 text-base sm:text-lg 3xl:text-xl text-white"
               >
-                <span className="w-2 h-2 rounded-full bg-[#4A7FA7] shrink-0" />
+                <span className="w-2 h-2 rounded-full bg-[#2563EB] shrink-0" />
                 {feature}
               </li>
             ))}
@@ -109,17 +109,21 @@ const UpcomingProjectCard = ({ project, index, onSelect }) => {
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
+      whileHover={{ y: -6 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative bg-[#1A3D63] rounded-xl border border-[#4A7FA7]/30 overflow-hidden shadow-lg transition-all duration-300 hover:border-[#B3CFE5] hover:shadow-[0_0_20px_rgba(74,127,167,0.3)] cursor-pointer text-left"
+      className="surface-card group relative overflow-hidden shadow-lg cursor-pointer text-left"
     >
-      <div className="aspect-[3/2] w-full relative overflow-hidden bg-[#0A1931] rounded-t-lg">
+      <span className="absolute top-4 left-4 z-10 section-index bg-[#0B1120]/70 backdrop-blur-sm border border-[#22304A] rounded-full px-2.5 py-1">
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <div className="aspect-[3/2] w-full relative overflow-hidden bg-[#0B1120] rounded-t-[1.5rem]">
         <img
           src={project.image}
           alt={`${project.title} preview`}
           className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-[#0A1931]/0 group-hover:bg-[#0A1931]/20 transition-colors duration-300" />
+        <div className="absolute inset-0 bg-[#0B1120]/0 group-hover:bg-[#0B1120]/20 transition-colors duration-300" />
       </div>
     </motion.button>
   );
@@ -129,14 +133,12 @@ const UpcomingProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
 
   return (
-    <section className="relative pb-24 md:pb-32 lg:pb-36 3xl:pb-40 bg-[#0A1931] min-h-screen">
-      {/* Fixed-height spacer to clear the fixed navbar. Uses an explicit
-          pixel height (not a Tailwind padding utility) so it can't be
-          affected by breakpoint-dependent navbar height changes. */}
+    <section className="relative pb-24 md:pb-32 lg:pb-36 3xl:pb-40 bg-[#0B1120] min-h-screen">
+      {/* Fixed-height spacer to clear the fixed navbar. */}
       <div style={{ height: "120px" }} aria-hidden="true" />
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[#4A7FA7]/5 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-[#2563EB]/5 rounded-full blur-[100px]" />
       </div>
 
       <div className="relative responsive-container">
@@ -147,11 +149,12 @@ const UpcomingProjects = () => {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center justify-center text-center mb-14 md:mb-16 3xl:mb-20 w-full"
         >
-          <h2 className="fluid-heading-lg font-bold text-[#F6FAFD] mb-4 tracking-tight">
+          <span className="eyebrow justify-center mb-4">In The Works</span>
+          <h2 className="font-display heading-tight fluid-heading-lg font-bold text-white mb-4">
             Upcoming <br />
-            <span className="text-[#B3CFE5]">Projects</span>
+            <span className="font-serif-display italic normal-case text-[#2563EB]">Projects</span>
           </h2>
-          <p className="text-base md:text-lg 3xl:text-xl text-[#B3CFE5]/80 max-w-xl 3xl:max-w-2xl mx-auto text-center">
+          <p className="text-base md:text-lg 3xl:text-xl text-[#9999A1] max-w-xl 3xl:max-w-2xl mx-auto text-center">
             In-house products we're building right now. Not live yet, but
             coming soon.
           </p>
@@ -176,7 +179,7 @@ const UpcomingProjects = () => {
           className="flex justify-center mt-12 3xl:mt-16 w-full"
         >
           <Link to="/#contact-form">
-            <button className="group inline-flex items-center gap-2 text-[#4A7FA7] hover:text-[#B3CFE5] transition-colors duration-200 cursor-pointer">
+            <button className="group inline-flex items-center gap-2 text-[#9999A1] hover:text-white transition-colors duration-200 cursor-pointer">
               <span className="font-medium 3xl:text-lg">
                 Want early access when these launch?
               </span>

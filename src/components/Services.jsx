@@ -1,141 +1,168 @@
-import React from "react";
+import { useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { Code, Smartphone, BarChart3, Layers } from "lucide-react";
+import { Code, Smartphone, Layers, Globe, Plus, Minus } from "lucide-react";
 
+// Real service categories offered by Senova, mapped from existing
+// Services.jsx content + agreed category naming.
 const services = [
   {
     icon: Code,
-    title: "Custom Web Development",
+    tag: "Strategy",
+    title: "Design Strategy",
     description:
-      "Building high-performance web applications with React, Tailwind CSS, and modern architectures that scale.",
-    features: [
-      "React & Next.js",
-      "Tailwind CSS",
-      "Responsive Design",
-      "Performance Optimization",
-    ],
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile App Development",
-    description:
-      "Creating premium, high-performance iOS and Android applications for seamless and native customer experiences.",
-    features: [
-      "Cross-Platform Apps",
-      "Native Performance",
-      "Custom UI/UX",
-      "API Integration",
-    ],
-  },
-  {
-    icon: BarChart3,
-    title: "SaaS & Product Engineering",
-    description:
-      "From concept to launch, we build scalable SaaS products that drive sustainable business growth.",
-    features: [
-      "Scalable Architecture",
-      "Multi-tenant Design",
-      "Analytics Dashboard",
-      "Subscription System",
-    ],
+      "Understanding the core market problem before designing. Every decision — from architecture to UI — is driven by commercial ROI, not decoration.",
   },
   {
     icon: Layers,
-    title: "Smart Automation & Brand Design",
+    tag: "Identity",
+    title: "Brand Identity",
     description:
-      "Designing stunning user interfaces coupled with intelligent background workflows to save time and convert leads.",
-    features: [
-      "Figma Prototyping",
-      "Brand Identity System",
-      "WhatsApp & Sheets Sync",
-      "Auto Notifications",
-    ],
+      "Bold visual systems built in Figma: logo direction, visual language, typography, and guidelines that keep a brand consistent across every touchpoint.",
+  },
+  {
+    icon: Smartphone,
+    tag: "Product",
+    title: "UI/UX & Web Development",
+    description:
+      "Crafting custom web applications and interactive interfaces — wireframing, prototyping, and production-grade front-end code with React and Tailwind CSS.",
+  },
+  {
+    icon: Globe,
+    tag: "Engineering",
+    title: "Custom Web Development",
+    description:
+      "Full-stack builds on React, Next.js, Node.js and Firebase — scalable architectures, clean APIs, and automation workflows that save time and convert leads.",
   },
 ];
 
-const ServiceCard = ({ service, index }) => {
+// Real stack Senova builds with.
+const stack = [
+  "React",
+  "Tailwind CSS",
+  "Firebase",
+  "Node.js",
+  "Next.js",
+  "Figma",
+];
+
+const AccordionItem = ({ service, index, isOpen, onToggle }) => {
   const Icon = service.icon;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -8 }}
-      className="group relative bg-[#1A3D63]/30 rounded-xl border border-[#4A7FA7]/20 shadow-lg p-6 md:p-7 3xl:p-9 cursor-pointer transition-all duration-500 hover:border-[#B3CFE5] hover:shadow-[0_0_30px_rgba(74,127,167,0.2)]"
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+      className={`surface-card overflow-hidden ${
+        isOpen ? "border-[#2563EB]/60" : ""
+      }`}
     >
-      <div className="w-14 h-14 3xl:w-16 3xl:h-16 rounded-xl bg-[#0A1931] border border-[#4A7FA7]/30 flex items-center justify-center mb-6 group-hover:bg-[#4A7FA7] transition-colors duration-500">
-        <Icon className="w-7 h-7 3xl:w-8 3xl:h-8 text-[#B3CFE5] group-hover:text-[#0A1931]" />
-      </div>
-      <h3 className="text-lg md:text-xl 3xl:text-2xl font-bold text-[#F6FAFD] mb-3 group-hover:text-[#B3CFE5] transition-colors duration-300">
-        {service.title}
-      </h3>
-      <p className="text-sm 3xl:text-base text-[#B3CFE5]/80 mb-6 leading-relaxed">
-        {service.description}
-      </p>
-      <ul className="space-y-3">
-        {service.features.map((feature, i) => (
-          <li
-            key={i}
-            className="flex items-center gap-3 text-sm 3xl:text-base text-[#B3CFE5]/70"
-          >
-            <svg
-              className="w-4 h-4 text-[#4A7FA7] flex-shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            {feature}
-          </li>
-        ))}
-      </ul>
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full flex items-center gap-4 p-5 sm:p-6 text-left cursor-pointer"
+      >
+        <span className="section-index shrink-0 w-6">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <div className="w-11 h-11 shrink-0 rounded-xl bg-[#0B1120] border border-[#22304A] flex items-center justify-center">
+          <Icon className="w-5 h-5 text-[#2563EB]" />
+        </div>
+        <div className="flex-1">
+          <span className="text-[11px] font-bold text-[#2563EB] uppercase tracking-widest">
+            {service.tag}
+          </span>
+          <h3 className="text-lg sm:text-xl font-display font-bold text-white">
+            {service.title}
+          </h3>
+        </div>
+        <span className="shrink-0 w-8 h-8 rounded-full border border-[#22304A] flex items-center justify-center text-[#9999A1]">
+          {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+        </span>
+      </button>
+
+      <motion.div
+        initial={false}
+        animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="overflow-hidden"
+      >
+        <p className="pl-[4.75rem] pr-6 sm:pr-8 pb-5 sm:pb-6 text-sm sm:text-base text-[#9999A1] leading-relaxed">
+          {service.description}
+        </p>
+      </motion.div>
     </motion.div>
   );
 };
 
 const Services = () => {
+  const [openIndex, setOpenIndex] = useState(0);
+
   return (
     <section
       id="services"
-      className="relative py-20 md:py-28 lg:py-32 3xl:py-36 bg-[#0A1931]"
+      className="relative py-20 md:py-28 lg:py-32 3xl:py-36 bg-[#0B1120] overflow-hidden"
     >
+      <div className="noise-overlay" />
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#4A7FA7]/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#2563EB]/5 rounded-full blur-[120px]" />
       </div>
 
       <div className="relative responsive-container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center text-center mb-14 md:mb-16 3xl:mb-20 w-full"
-        >
-          <span className="text-[#4A7FA7] text-sm 3xl:text-base font-semibold tracking-wider uppercase mb-4 block">
-            Our Services
-          </span>
-          <h2 className="fluid-heading-lg font-bold text-[#F6FAFD] mb-4 tracking-tight">
-            Four Pillars of <br />
-            <span className="text-[#B3CFE5]">Digital Excellence</span>
-          </h2>
-          <p className="text-base md:text-lg 3xl:text-xl text-[#B3CFE5]/80 max-w-xl 3xl:max-w-2xl mx-auto text-center">
-            Comprehensive solutions designed to transform your digital presence
-            and accelerate business growth.
-          </p>
-        </motion.div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 3xl:gap-16">
+          {/* Left sticky column */}
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-32">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <span className="eyebrow mb-4">Our Services</span>
+                <h2 className="font-display heading-tight text-4xl sm:text-5xl 3xl:text-6xl font-bold text-white mb-8">
+                  What We Help
+                  <br />
+                  <span className="font-serif-display italic normal-case text-[#2563EB]">You Shape</span>
+                </h2>
+                <p className="text-base sm:text-lg text-[#9999A1] leading-relaxed mb-10 max-w-md">
+                  Comprehensive solutions designed to transform your digital
+                  presence and accelerate business growth.
+                </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 3xl:gap-10">
-          {services.map((service, index) => (
-            <ServiceCard key={service.title} service={service} index={index} />
-          ))}
+                <h3 className="text-sm font-bold text-white uppercase tracking-widest mb-4">
+                  Tools &amp; Technologies We Master
+                </h3>
+                <div className="flex flex-wrap gap-2.5">
+                  {stack.map((tool) => (
+                    <span
+                      key={tool}
+                      className="px-4 py-2 rounded-full bg-[#131C2E] border border-[#22304A] text-sm font-medium text-white hover:border-[#2563EB]/50 hover:-translate-y-0.5 transition-all duration-300"
+                    >
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Right accordion column */}
+          <div className="lg:col-span-7 flex flex-col gap-4">
+            {services.map((service, index) => (
+              <AccordionItem
+                key={service.title}
+                service={service}
+                index={index}
+                isOpen={openIndex === index}
+                onToggle={() =>
+                  setOpenIndex(openIndex === index ? -1 : index)
+                }
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
