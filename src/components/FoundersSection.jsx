@@ -91,7 +91,7 @@ const FounderRow = ({ founder, index }) => {
       {/* Content column */}
       <div className={`max-w-xl md:max-w-none text-center md:text-left mx-auto md:mx-0 ${reversed ? "md:order-1" : "md:order-2"}`}>
         <span className="section-index text-[#2563EB] block mb-2">
-          {String(index + 1).padStart(2, "0")} / Founder
+          {String(index + 1).padStart(2, "0")} / {index === 0 ? "Founder" : "Co-Founder"}
         </span>
         <h3 className="font-serif-display italic text-3xl sm:text-4xl text-white mb-2">
           {founder.name}
