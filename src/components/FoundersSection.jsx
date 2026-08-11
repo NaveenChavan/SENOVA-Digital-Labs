@@ -16,7 +16,7 @@ const founders = [
     role: "Tech Lead & Partnerships",
     bio: "A driven Full-Stack Developer with a deep passion for clean UI/UX and product architecture. Naveen leverages advanced web technologies to build scalable digital solutions for businesses globally, while expertly managing client partnerships to align technical execution with business strategy.",
     icon: Code,
-    image: "/assets/Naveen.webp",
+    image: "/assets/Naveen.jpeg",
     linkedin: "https://www.linkedin.com/in/naveen-chavan-8852a9368/",
   },
   {
@@ -59,7 +59,9 @@ const FounderRow = ({ founder, index }) => {
       }`}
     >
       {/* Portrait column */}
-      <div className={`flex justify-center ${reversed ? "md:order-2" : "md:order-1"}`}>
+      <div
+        className={`flex justify-center ${reversed ? "md:order-2" : "md:order-1"}`}
+      >
         <div className="group relative w-52 h-52 sm:w-60 sm:h-60">
           <div className="absolute inset-0 rounded-[2rem] bg-[#2563EB]/25 blur-2xl scale-105 opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
           <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-[#22304A] group-hover:border-[#2563EB]/50 transition-colors duration-500 shadow-2xl">
@@ -89,7 +91,9 @@ const FounderRow = ({ founder, index }) => {
       </div>
 
       {/* Content column */}
-      <div className={`max-w-xl md:max-w-none text-center md:text-left mx-auto md:mx-0 ${reversed ? "md:order-1" : "md:order-2"}`}>
+      <div
+        className={`max-w-xl md:max-w-none text-center md:text-left mx-auto md:mx-0 ${reversed ? "md:order-1" : "md:order-2"}`}
+      >
         <span className="section-index text-[#2563EB] block mb-2">
           {String(index + 1).padStart(2, "0")} / {index === 0 ? "Founder" : "Co-Founder"}
         </span>
@@ -99,9 +103,7 @@ const FounderRow = ({ founder, index }) => {
         <span className="inline-block text-xs font-bold text-[#2563EB] tracking-[0.2em] uppercase mb-5">
           {founder.role}
         </span>
-        <p className="text-[#9999A1] leading-relaxed mb-6">
-          {founder.bio}
-        </p>
+        <p className="text-[#9999A1] leading-relaxed mb-6">{founder.bio}</p>
         <a
           href={founder.linkedin}
           target="_blank"
@@ -119,7 +121,10 @@ const FounderRow = ({ founder, index }) => {
 
 const FoundersSection = () => {
   return (
-    <section id="founders" className="relative py-20 md:py-28 lg:py-32 3xl:py-36 bg-[#0B1120] overflow-hidden">
+    <section
+      id="founders"
+      className="relative py-20 md:py-28 lg:py-32 3xl:py-36 bg-[#0B1120] overflow-hidden"
+    >
       <div className="noise-overlay" />
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#2563EB]/5 rounded-full blur-[130px]" />
