@@ -55,6 +55,22 @@
     />
     <meta name="twitter:image" content="https://www.senovadigital.xyz/android-chrome-512x512.png" />
 
+    <!-- OneSignal Web Push SDK -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function (OneSignal) {
+        await OneSignal.init({
+          appId: "32c97b03-4a8e-46af-b4d9-a68de293a709",
+          // Keeps the user subscribed even after they clear browser data
+          autoResubscribe: true,
+          // Uncomment the next line only for local development testing:
+          // allowLocalhostAsSecureOrigin: true,
+          notifyButton: { enable: false }, // We use our own custom NotifyButton
+        });
+      });
+    </script>
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
