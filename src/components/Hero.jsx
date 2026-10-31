@@ -59,15 +59,7 @@ const Hero = () => {
               serif accent word, 3D centerpiece offset to the side */}
           <div className="relative w-full grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] items-center gap-6 lg:gap-4">
             <div className="text-center lg:text-left order-2 lg:order-1">
-              <motion.h1
-                variants={{
-                  hidden: { opacity: 0, y: 28 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.7, ease: [0.25, 0.1, 0.25, 1] },
-                  },
-                }}
+              <h1
                 className="relative font-display heading-tight text-[clamp(2.75rem,6vw+1rem,6.5rem)] font-bold text-white leading-[0.95] select-none"
               >
                 THINK
@@ -75,49 +67,23 @@ const Hero = () => {
                 <span className="font-serif-display italic normal-case tracking-normal text-[#2563EB]">
                   Creatively.
                 </span>
-              </motion.h1>
+              </h1>
 
-              <motion.p
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
-                  },
-                }}
+              <p
                 className="text-sm sm:text-base font-semibold text-[#7DD3FC] max-w-xl mx-auto lg:mx-0 mt-5 sm:mt-6"
               >
                 Custom Website Development, SaaS Solutions &amp; Business
                 Automation for Growing Businesses.
-              </motion.p>
+              </p>
 
-              <motion.p
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
-                  },
-                }}
+              <p
                 className="fluid-body-lg text-[#9999A1] max-w-xl mx-auto lg:mx-0 mt-4 mb-10 sm:mb-12"
               >
                 We help ambitious brands turn bold ideas into structured,
                 high-converting digital experiences.
-              </motion.p>
+              </p>
 
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, y: 16 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
-                  },
-                }}
-                className="flex flex-col sm:flex-row items-center lg:items-start gap-4"
-              >
+              <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4">
                 <Link to="/#contact-form">
                   <button className="btn-tactile group inline-flex items-center gap-2 px-7 py-3.5 bg-[#2563EB] hover:bg-[#3B82F6] text-white font-bold rounded-full transition-colors duration-300 cursor-pointer shadow-[0_0_25px_rgba(37,99,235,0.45)] hover:shadow-[0_0_40px_rgba(37,99,235,0.65)]">
                     Book a Discovery Call
@@ -129,7 +95,7 @@ const Hero = () => {
                     View Our Work
                   </button>
                 </Link>
-              </motion.div>
+              </div>
             </div>
 
             {/* 3D glass centerpiece — now a floating element within its own
@@ -137,9 +103,8 @@ const Hero = () => {
                 behind/inside the transmissive glass so it reads through it. */}
             <motion.div
               variants={{
-                hidden: { opacity: 0, scale: 0.85 },
+                hidden: { scale: 0.85 },
                 visible: {
-                  opacity: 1,
                   scale: 1,
                   transition: { duration: 0.8, ease: [0.25, 0.1, 0.25, 1] },
                 },
@@ -156,7 +121,7 @@ const Hero = () => {
                   alt="Senova Digital Labs"
                   width="260"
                   height="275"
-                  fetchpriority="high"
+                  fetchPriority="high"
                   decoding="async"
                   className="w-full h-full object-contain drop-shadow-[0_0_25px_rgba(37,99,235,0.45)]"
                 />

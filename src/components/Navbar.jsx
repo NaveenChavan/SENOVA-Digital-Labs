@@ -93,7 +93,7 @@ const Navbar = () => {
                   alt="Senova Digital Labs logo"
                   width="48"
                   height="51"
-                  fetchpriority="high"
+                  fetchPriority="high"
                   decoding="async"
                   className="w-full h-full object-contain"
                 />
