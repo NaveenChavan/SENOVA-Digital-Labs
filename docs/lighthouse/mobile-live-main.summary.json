@@ -1,0 +1,26 @@
+{
+  "label": "mobile-live-main",
+  "target": "https://www.senovadigital.xyz/",
+  "form": "mobile",
+  "runs": 3,
+  "blocked": [],
+  "performance": {
+    "median": 32,
+    "min": 32,
+    "max": 41
+  },
+  "seo": 100,
+  "accessibility": 98,
+  "bestPractices": 79,
+  "FCP_s": 4.55,
+  "LCP_s": 6.34,
+  "TBT_ms": 1929,
+  "CLS": 0,
+  "SI_s": 7.67,
+  "TTI_s": 7.02,
+  "allRuns": [
+    41,
+    32,
+    32
+  ]
+}

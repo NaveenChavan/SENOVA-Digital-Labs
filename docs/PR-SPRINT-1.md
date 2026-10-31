@@ -7,6 +7,8 @@
 
 This PR moves all route metadata (title, description, canonical, Open Graph, Twitter) out of the static `index.html` and into a per-route `<SEO>` component that runs in the browser. That is required to get correct, unique tags per route, but it has a direct consequence:
 
+Measured on the live site (production = `main`) on 2026-10-31: `/upcoming-projects` currently serves the homepage's title and canonical (`https://www.senovadigital.xyz/`) in its raw HTML, and no route has an `<h1>` in raw HTML.
+
 | Raw HTML (what a crawler gets **without** running JavaScript) | `main` today | This PR |
 |---|---|---|
 | `<title>` | present (homepage title on every route) | **absent** |
@@ -69,7 +71,7 @@ Open items for SENOVA: "Raichur" and "Karnataka" appear in the page title and me
 
 All checks run against the production build of this branch, served locally with a Vercel-style SPA rewrite (exact file, otherwise `index.html` with HTTP 200), in Chromium via Playwright with external hosts blocked.
 
-**Build:** `npm run build` exits 0. `dist/index.html` is 4.23 kB (was 5.69 kB). JS bundle is 689 kB / 215 kB gzip, unchanged; the pre-existing ">500 kB chunk" warning remains and is out of scope.
+**Build:** `npm run build` exits 0. `dist/index.html` is 4.24 kB (`main`: 5.30 kB). Main JS bundle is 689.4 kB / 214.7 kB gzip (`main`: 670.1 kB / 208.5 kB gzip); the 19 kB increase is `react-helmet-async`, which was a dependency but previously unused and tree-shaken out. The pre-existing ">500 kB chunk" warning remains and is out of scope.
 
 **Rendered DOM (JavaScript on):**
 
@@ -99,7 +101,8 @@ All checks run against the production build of this branch, served locally with 
 - **Raw HTML has no per-route metadata or content until prerendering exists** (top of this document). Biggest effect: link previews on non-JS scrapers.
 - Homepage schema declares the business twice (`ProfessionalService` in `index.html` and `Organization` from `Home.jsx`). Valid, but duplicated; Sprint 2 merges them into one entity.
 - Sitemap is hand-maintained (two routes).
-- Pre-existing >500 kB JS chunk (Sprint 6 scope).
+- Pre-existing >500 kB JS chunk (Sprint 6 scope); this PR adds 19 kB (`react-helmet-async`).
+- Mobile performance is not addressed here and is not optimized. Lighthouse mobile on this branch: median 42 (5 runs, local), versus 44 for `main` under the same conditions, which is within run-to-run noise. Live production mobile: median 32 (3 runs). HTML reports and summaries in `docs/lighthouse/` on this branch.
 - Schema `address` is not corroborated by visible body text (see Schema).
 - Not validated by Google's Rich Results Test or Search Console; that needs the deployed URL.
 - No Google Analytics or Search Console changes in this PR.

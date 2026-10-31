@@ -1,0 +1,26 @@
+{
+  "label": "desktop-live-main",
+  "target": "https://www.senovadigital.xyz/",
+  "form": "desktop",
+  "runs": 3,
+  "blocked": [],
+  "performance": {
+    "median": 75,
+    "min": 75,
+    "max": 79
+  },
+  "seo": 100,
+  "accessibility": 98,
+  "bestPractices": 78,
+  "FCP_s": 1.63,
+  "LCP_s": 1.82,
+  "TBT_ms": 177,
+  "CLS": 0,
+  "SI_s": 2.9,
+  "TTI_s": 1.92,
+  "allRuns": [
+    75,
+    79,
+    75
+  ]
+}

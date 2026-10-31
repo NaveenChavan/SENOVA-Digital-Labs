@@ -1,0 +1,28 @@
+{
+  "label": "mobile-main-local",
+  "target": "http://127.0.0.1:60751/",
+  "form": "mobile",
+  "runs": 5,
+  "blocked": [],
+  "performance": {
+    "median": 44,
+    "min": 34,
+    "max": 49
+  },
+  "seo": 100,
+  "accessibility": 98,
+  "bestPractices": 75,
+  "FCP_s": 4.02,
+  "LCP_s": 6.12,
+  "TBT_ms": 1014,
+  "CLS": 0,
+  "SI_s": 5.73,
+  "TTI_s": 7.03,
+  "allRuns": [
+    47,
+    34,
+    40,
+    49,
+    44
+  ]
+}

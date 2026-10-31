@@ -1,0 +1,28 @@
+{
+  "label": "mobile-sprint1-local",
+  "target": "http://127.0.0.1:63050/",
+  "form": "mobile",
+  "runs": 5,
+  "blocked": [],
+  "performance": {
+    "median": 42,
+    "min": 36,
+    "max": 44
+  },
+  "seo": 100,
+  "accessibility": 98,
+  "bestPractices": 75,
+  "FCP_s": 3.68,
+  "LCP_s": 6.02,
+  "TBT_ms": 1059,
+  "CLS": 0,
+  "SI_s": 6.59,
+  "TTI_s": 6.95,
+  "allRuns": [
+    44,
+    44,
+    36,
+    42,
+    38
+  ]
+}
