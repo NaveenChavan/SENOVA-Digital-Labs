@@ -9,9 +9,9 @@ import Contact from "../components/Contact";
 
 const SITE_URL = "https://www.senovadigital.xyz";
 
-// Organization + WebSite JSON-LD, built only from business information
-// already verified and in use elsewhere in this codebase (see the
-// ProfessionalService schema in index.html). No fabricated details.
+// Organization + WebSite JSON-LD, built only from details the site itself
+// publishes (name, URL, logo, email, phone, social profiles). Nothing
+// here is invented.
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",

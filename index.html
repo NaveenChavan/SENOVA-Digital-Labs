@@ -44,9 +44,13 @@
 
     <!--
       Static fallback JSON-LD (non-JS crawlers / social scrapers that don't
-      execute the client-rendered <SEO> structured data). Contains only
-      verified business information. The homepage additionally renders
-      Organization + WebSite schema client-side — see src/pages/Home.jsx.
+      execute the client-rendered <SEO> structured data). Limited to details
+      the site itself publishes: name, URL, email, phone, social profiles,
+      the offered services, and a city-level address (Raichur, Karnataka; no
+      street address is published). priceRange and geo coordinates were
+      removed because nothing on the site supports them. The homepage
+      additionally renders Organization + WebSite schema client-side — see
+      src/pages/Home.jsx.
     -->
     <script type="application/ld+json">
       {
@@ -57,17 +61,11 @@
         "url": "https://www.senovadigital.xyz/",
         "email": "info@senovadigital.xyz",
         "telephone": "+91-9731133425",
-        "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Raichur",
           "addressRegion": "Karnataka",
           "addressCountry": "IN"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 16.2076,
-          "longitude": 77.3463
         },
         "areaServed": [
           { "@type": "City", "name": "Raichur" },

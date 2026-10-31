@@ -15,7 +15,7 @@ Delivered:
 - `HelmetProvider` wired in `src/main.jsx`.
 - `/` and `/upcoming-projects` each render their own `<SEO>` with unique title, description, and canonical URL.
 - `index.html` no longer carries any route-specific static tags (title/description/canonical/OG/Twitter) — see "Technical finding" below for why.
-- Removed `meta[name=keywords]`, `geo.region`, `geo.placename`, `ICBM` (no verified ranking value; kept geo data only in the already-verified `ProfessionalService` JSON-LD).
+- Removed `meta[name=keywords]`, `geo.region`, `geo.placename`, `ICBM` (no verified ranking value), and the unsupported `priceRange` and `geo` coordinates from the `ProfessionalService` JSON-LD (nothing on the site publishes a price range or a verified office location).
 - Fixed duplicate `<h1>` (Hero + Offer both rendered an H1). Offer's heading is now `<h2>`. Added a visible descriptive subheading next to Hero's existing "THINK Creatively." H1.
 - Fixed `/upcoming-projects` having zero H1s (promoted its main heading to `<h1>`).
 - Fixed one inconsistent anchor (`Portfolio.jsx` bare `href="#contact-form"` → `Link to="/#contact-form"`).
@@ -46,7 +46,7 @@ The brief requires evaluating Vite-compatible prerendering without migrating to 
 **Recommendation:** **Option A (custom Playwright-based prerender script)** for this project, specifically because the site currently has only 2–7 real routes planned through Sprint 4 and uses plain declarative React Router — the cost of migrating routing architecture (B or C) is not justified yet. Playwright is already a devDependency (used for this PR's own verification), so no new dependency is introduced. Revisit option C later only if the route count and data-loading needs grow enough that React Router's own framework mode becomes worth the migration cost — that would be a separate, explicitly-approved architectural decision, consistent with the brief's instruction not to introduce major rendering-architecture changes without approval.
 
 **Other Sprint 2 work (schema):**
-- Audit/expand `ProfessionalService` schema (already present, already using only verified data).
+- Audit/expand `ProfessionalService` schema (only details the site itself publishes; `priceRange` and `geo` were removed in Sprint 1 as unsupported).
 - Add `Service` schema once Sprint 3 service pages exist with real content.
 - Add `BreadcrumbList` schema once there is a real breadcrumb hierarchy (i.e. once service/case-study pages exist).
 - Validate everything with Google's Rich Results Test before merging.
