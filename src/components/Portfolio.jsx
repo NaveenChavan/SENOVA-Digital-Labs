@@ -253,14 +253,14 @@ const Portfolio = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="flex justify-center mt-14 3xl:mt-16 w-full"
         >
-          <a href="#contact-form">
+          <Link to="/#contact-form">
             <button className="group inline-flex items-center gap-2 text-[#9999A1] hover:text-white transition-colors duration-200 cursor-pointer">
               <span className="font-medium 3xl:text-lg">
                 Want to be our next success story?
               </span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
             </button>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
