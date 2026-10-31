@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import SEO from "../components/SEO";
 
 const upcomingProjects = [
   {
@@ -138,6 +139,11 @@ const UpcomingProjects = () => {
 
   return (
     <section className="relative pb-24 md:pb-32 lg:pb-36 3xl:pb-40 bg-[#0B1120] min-h-screen">
+      <SEO
+        title="Upcoming Projects | SENOVA Digital Labs"
+        description="A look at what SENOVA Digital Labs is building next: an in-house AI sales dashboard and an offline-first gym management system, both in active development."
+        canonicalUrl="https://www.senovadigital.xyz/upcoming-projects"
+      />
       {/* Fixed-height spacer to clear the fixed navbar. */}
       <div style={{ height: "120px" }} aria-hidden="true" />
 
@@ -154,10 +160,10 @@ const UpcomingProjects = () => {
           className="flex flex-col items-center justify-center text-center mb-14 md:mb-16 3xl:mb-20 w-full"
         >
           <span className="eyebrow justify-center mb-4">In The Works</span>
-          <h2 className="font-display heading-tight fluid-heading-lg font-bold text-white mb-4">
-            Upcoming <br />
-            <span className="font-serif-display italic normal-case text-[#2563EB]">Projects</span>
-          </h2>
+          <h1 className="font-display heading-tight fluid-heading-lg font-bold text-white mb-4">
+                      Upcoming <br />
+                      <span className="font-serif-display italic normal-case text-[#2563EB]">Projects</span>
+                    </h1>
           <p className="text-base md:text-lg 3xl:text-xl text-[#9999A1] max-w-xl 3xl:max-w-2xl mx-auto text-center">
             In-house products we're building right now. Not live yet, but
             coming soon.
