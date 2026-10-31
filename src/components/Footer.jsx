@@ -54,7 +54,10 @@ const socials = [
 ];
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  // Fixed at build time so the prerendered HTML and the hydrated page
+  // always agree (a runtime `new Date()` would differ for a build served
+  // across a new year). Rebuild to update.
+  const currentYear = __BUILD_YEAR__;
 
   return (
     <footer className="bg-[#0B1120] border-t border-[#22304A] overflow-hidden relative">

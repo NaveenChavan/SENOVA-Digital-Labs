@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Bell, BellRing, BellOff } from "lucide-react";
+import { useHasMounted } from "../hooks/useHasMounted";
 
 // Wait until the OneSignal Web SDK is ready.
 const waitForOneSignal = () =>
@@ -17,8 +18,10 @@ const waitForOneSignal = () =>
     });
   });
 
-// Determine the initial browser support / permission state.
-const getInitialStatus = () => {
+// Browser support / permission state. Browser-only: call it only after
+// mount (see useHasMounted), never during render on the server or during
+// hydration, or the prerendered and hydrated markup will differ.
+const getBrowserStatus = () => {
   if (
     typeof Notification === "undefined" ||
     !("serviceWorker" in navigator)
@@ -38,11 +41,21 @@ const getInitialStatus = () => {
 };
 
 const NotifyButton = () => {
-  const [status, setStatus] = useState(getInitialStatus);
+  // Before mount (prerender and the hydration pass) this is false, the
+  // component renders nothing, and that matches the prerendered HTML.
+  // After mount the real browser state is read during render, so no
+  // setState-in-effect round trip is needed.
+  const hasMounted = useHasMounted();
+  const browserStatus = hasMounted ? getBrowserStatus() : null;
 
-  // Sync the UI with the actual OneSignal subscription.
+  // Updates from OneSignal and from the user's clicks. `null` = nothing
+  // has happened yet, so fall back to what the browser reports.
+  const [statusOverride, setStatus] = useState(null);
+  const status = statusOverride ?? browserStatus;
+
+  // Sync the UI with the actual OneSignal subscription once mounted.
   useEffect(() => {
-    if (status === "unsupported") return;
+    if (browserStatus === null || browserStatus === "unsupported") return;
 
     let cancelled = false;
     let OneSignalInstance = null;
@@ -101,10 +114,11 @@ const NotifyButton = () => {
         );
       }
     };
-  }, []);
+  }, [browserStatus]);
 
   const handleClick = async () => {
     if (
+      status === null ||
       status === "granted" ||
       status === "unsupported" ||
       status === "loading"
@@ -161,8 +175,9 @@ const NotifyButton = () => {
     }
   };
 
-  // Don't show the button if Web Push isn't supported.
-  if (status === "unsupported") {
+  // Not rendered until the browser state is known (identical to the
+  // prerendered HTML), and never if Web Push isn't supported.
+  if (status === null || status === "unsupported") {
     return null;
   }
 
