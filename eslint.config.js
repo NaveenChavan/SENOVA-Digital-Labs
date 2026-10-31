@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'dist-ssr']),
   {
     files: ['public/firebase-messaging-sw.js'],
     languageOptions: {
@@ -22,7 +22,7 @@ export default defineConfig([
     ],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: { ...globals.browser, __BUILD_YEAR__: 'readonly' },
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
