@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
+import { useImageLoaded } from "../hooks/useImageLoaded";
 
 const upcomingProjects = [
   {
@@ -103,7 +104,9 @@ const ProjectModal = ({ project, onClose }) => {
 };
 
 const UpcomingProjectCard = ({ project, index, onSelect }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
+  // Shared hook: also catches an image that finished loading from the
+  // prerendered HTML before React hydrated (see useImageLoaded).
+  const { loaded: imageLoaded, imgProps } = useImageLoaded();
   return (
     <motion.button
       type="button"
@@ -125,7 +128,7 @@ const UpcomingProjectCard = ({ project, index, onSelect }) => {
           alt={`${project.title} preview`}
           loading="lazy"
           decoding="async"
-          onLoad={() => setImageLoaded(true)}
+          {...imgProps}
           className={`w-full h-full object-contain transition-all duration-500 group-hover:scale-[1.02] ${imageLoaded ? "opacity-100" : "opacity-0"}`}
         />
         <div className="absolute inset-0 bg-[#0B1120]/0 group-hover:bg-[#0B1120]/20 transition-colors duration-300" />

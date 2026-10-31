@@ -1,8 +1,8 @@
-import { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useImageLoaded } from "../hooks/useImageLoaded";
 
 const projects = [
   {
@@ -57,18 +57,15 @@ const getScreenshotUrl = (liveUrl) => {
 };
 
 const ProjectImage = ({ project }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  // Shared hook: also catches images that finished loading from the
+  // prerendered HTML before React hydrated (see useImageLoaded).
+  const { loaded, failed, imgProps } = useImageLoaded();
+  const imageError = failed;
+  const imageLoaded = loaded || failed;
 
   const imageSrc =
     project.staticImage ||
     (project.liveUrl !== "#" ? getScreenshotUrl(project.liveUrl) : null);
-
-  const handleLoad = () => setImageLoaded(true);
-  const handleError = () => {
-    setImageError(true);
-    setImageLoaded(true);
-  };
 
   if (!imageSrc) {
     return (
@@ -112,8 +109,7 @@ const ProjectImage = ({ project }) => {
             src={imageSrc}
             alt={`${project.title} screenshot`}
             className={`absolute inset-0 w-full h-full object-contain transition-all duration-500 group-hover:scale-105 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
-            onLoad={handleLoad}
-            onError={handleError}
+            {...imgProps}
             loading="lazy"
           />
         </>

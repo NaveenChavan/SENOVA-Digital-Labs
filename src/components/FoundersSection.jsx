@@ -1,7 +1,7 @@
-import { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Code, Cloud, ArrowUpRight } from "lucide-react";
+import { useImageLoaded } from "../hooks/useImageLoaded";
 
 const LinkedInIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -44,8 +44,9 @@ const PlaceholderPortrait = ({ name }) => (
 // section doesn't read as two stamped-out copies of one template.
 const FounderRow = ({ founder, index }) => {
   const Icon = founder.icon;
-  const [imageFailed, setImageFailed] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  // Shared hook: also catches a photo that finished loading from the
+  // prerendered HTML before React hydrated (see useImageLoaded).
+  const { loaded: imageLoaded, failed: imageFailed, imgProps } = useImageLoaded();
   const reversed = index % 2 === 1;
 
   return (
@@ -76,8 +77,7 @@ const FounderRow = ({ founder, index }) => {
                 height="240"
                 loading={index === 0 ? "eager" : "lazy"}
                 decoding="async"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageFailed(true)}
+                {...imgProps}
                 className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-105 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
               />
             ) : (
