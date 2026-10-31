@@ -86,7 +86,22 @@ const Hero = () => {
                     transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
                   },
                 }}
-                className="fluid-body-lg text-[#9999A1] max-w-xl mx-auto lg:mx-0 mt-8 sm:mt-10 mb-10 sm:mb-12"
+                className="text-sm sm:text-base font-semibold text-[#7DD3FC] max-w-xl mx-auto lg:mx-0 mt-5 sm:mt-6"
+              >
+                Custom Website Development, SaaS Solutions &amp; Business
+                Automation for Growing Businesses.
+              </motion.p>
+
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
+                  },
+                }}
+                className="fluid-body-lg text-[#9999A1] max-w-xl mx-auto lg:mx-0 mt-4 mb-10 sm:mb-12"
               >
                 We help ambitious brands turn bold ideas into structured,
                 high-converting digital experiences.

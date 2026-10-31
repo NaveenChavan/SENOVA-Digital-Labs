@@ -34,16 +34,13 @@ const Offer = () => {
               Launch Offer
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.1, ease: smoothEase }}
-              className="font-display heading-tight fluid-heading-lg font-extrabold text-white mb-6 w-full text-center"
-            >
+            <motion.h2 initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: 0.1, ease: smoothEase }}
+            className="font-display heading-tight fluid-heading-lg font-extrabold text-white mb-6 w-full text-center">
               Scale Your Business. <br />
-              <span className="font-serif-display italic normal-case text-[#2563EB]">We Pay For Your Trust.</span>
-            </motion.h1>
+              <span className="font-serif-display italic normal-case text-[#2563EB]">We Pay For Your Trust.</span></motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
