@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=swap");
 @import "tailwindcss";
+/* docs/ holds Lighthouse HTML reports full of class-like strings; scanning
+   them made Tailwind emit unused utilities. Only app code should count. */
+@source not "../docs";
 
 @theme {
   /* Navy design system — deep blue-black base matching brand reference */
@@ -24,10 +27,15 @@
   --breakpoint-4k: 2560px;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Reset lives in the base layer. Unlayered CSS beats every Tailwind v4
+   utility (which are layered), so an unlayered `* { margin: 0; padding: 0 }`
+   silently disabled all m-*, p-* and space-* spacing classes. */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 }
 
 html {
