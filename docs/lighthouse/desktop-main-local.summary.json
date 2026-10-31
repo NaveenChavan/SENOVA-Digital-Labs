@@ -1,0 +1,26 @@
+{
+  "label": "desktop-main-local",
+  "target": "http://127.0.0.1:56640/",
+  "form": "desktop",
+  "runs": 3,
+  "blocked": [],
+  "performance": {
+    "median": 92,
+    "min": 92,
+    "max": 93
+  },
+  "seo": 100,
+  "accessibility": 98,
+  "bestPractices": 74,
+  "FCP_s": 1,
+  "LCP_s": 1.21,
+  "TBT_ms": 92,
+  "CLS": 0,
+  "SI_s": 1.62,
+  "TTI_s": 1.27,
+  "allRuns": [
+    93,
+    92,
+    92
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "label": "desktop-sprint1-prerender-local",
+  "target": "http://127.0.0.1:63654/",
+  "form": "desktop",
+  "runs": 3,
+  "blocked": [],
+  "performance": {
+    "median": 96,
+    "min": 81,
+    "max": 96
+  },
+  "seo": 100,
+  "accessibility": 98,
+  "bestPractices": 74,
+  "FCP_s": 0.96,
+  "LCP_s": 1.08,
+  "TBT_ms": 45,
+  "CLS": 0.001,
+  "SI_s": 1.29,
+  "TTI_s": 1.19,
+  "allRuns": [
+    81,
+    96,
+    96
+  ]
+}

@@ -1,6 +1,6 @@
 # SENOVA Digital Labs — Advanced SEO Roadmap (Sprints 1–6)
 
-**Status:** Sprint 1 implemented and verified on `feature/advanced-seo`. Sprints 2–6 are planned only — not implemented. Each sprint requires separate review and approval before work begins.
+**Status:** Sprint 1 (including build-time prerendering, pulled forward from Sprint 2 to meet the raw-HTML requirement) is on `feature/advanced-seo-prerender`, for review. Sprints 2–6 are on a separate local branch and not part of Sprint 1. Each sprint requires separate review and approval.
 
 **Owner of business content/metrics:** SENOVA team. This codebase intentionally ships no fabricated metrics, testimonials, addresses, or claims — see "Content rules" at the end of this document.
 
@@ -20,8 +20,11 @@ Delivered:
 - Fixed `/upcoming-projects` having zero H1s (promoted its main heading to `<h1>`).
 - Fixed one inconsistent anchor (`Portfolio.jsx` bare `href="#contact-form"` → `Link to="/#contact-form"`).
 - `sitemap.xml` `lastmod` corrected to reflect actual change date; `robots.txt` audited, no changes needed (already correct).
+- **Build-time prerendering** (moved here from Sprint 2): `/` and `/upcoming-projects` ship their title, description, canonical, Open Graph tags, JSON-LD, `<h1>` and content in the initial HTML, and the browser hydrates that markup. Implemented with `react-dom/server` in Node (`scripts/prerender.mjs`), not the Playwright script recommended below: Vercel's build image has no Chromium, and the Node approach needs no browser and no new dependency. Full details and test evidence in `docs/PR-SPRINT-1.md`.
 
-**Technical finding worth recording:** `react-helmet-async` only de-duplicates tags it itself has rendered in a previous commit — it does **not** remove or overwrite static tags already present in `index.html`. Keeping a "fallback" title/canonical in `index.html` alongside the `<SEO>` component therefore produces two `<title>` and two `<link rel="canonical">` tags in the final DOM, and on `/upcoming-projects` the leftover static tag was literally the *homepage's* canonical URL — a direct violation of "no duplicate/misleading canonical tags." This was caught via Playwright-rendered-DOM inspection, not by reading source code, which is why the task explicitly required verifying rendered HTML rather than JSX. Fix applied: `index.html` now contains no route-specific tags at all; `<SEO>` is the single source of truth for every route.
+**Technical finding worth recording:** `react-helmet-async` only de-duplicates tags it itself has rendered in a previous commit — it does **not** remove or overwrite static tags already present in `index.html`. Keeping a "fallback" title/canonical in `index.html` alongside the `<SEO>` component therefore produces two `<title>` and two `<link rel="canonical">` tags in the final DOM, and on `/upcoming-projects` the leftover static tag was literally the *homepage's* canonical URL — a direct violation of "no duplicate/misleading canonical tags." This was caught via Playwright-rendered-DOM inspection, not by reading source code, which is why the task explicitly required verifying rendered HTML rather than JSX. Fix applied: `index.html` now contains no route-specific tags at all; `<SEO>` is the single source of truth for every route, and the prerender writes its output into each page's HTML.
+
+**Second finding (prerendering):** if hydration fails, React re-renders the page but leaves the prerendered `<head>` tags in place, which produces duplicate titles and canonicals again. Hydration therefore has to succeed for the SEO tags to be correct, and `verify:seo` treats any hydration error as a failure.
 
 ---
 
@@ -29,7 +32,7 @@ Delivered:
 
 **Scope:** Prerendering decision + implementation (if approved), schema expansion.
 
-### Prerendering recommendation (researched now, not implemented)
+### Prerendering recommendation (researched before Sprint 1; now implemented in Sprint 1, see above)
 
 The brief requires evaluating Vite-compatible prerendering without migrating to Next.js. Three realistic options exist for this stack (React 19, Vite 8, React Router 7.9 in classic `<BrowserRouter>` mode, deployed on Vercel):
 

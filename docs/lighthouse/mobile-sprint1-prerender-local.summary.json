@@ -1,0 +1,28 @@
+{
+  "label": "mobile-sprint1-prerender-local",
+  "target": "http://127.0.0.1:50747/",
+  "form": "mobile",
+  "runs": 5,
+  "blocked": [],
+  "performance": {
+    "median": 51,
+    "min": 45,
+    "max": 57
+  },
+  "seo": 100,
+  "accessibility": 98,
+  "bestPractices": 75,
+  "FCP_s": 3.42,
+  "LCP_s": 4.57,
+  "TBT_ms": 1290,
+  "CLS": 0,
+  "SI_s": 4.8,
+  "TTI_s": 6.02,
+  "allRuns": [
+    57,
+    52,
+    49,
+    45,
+    51
+  ]
+}

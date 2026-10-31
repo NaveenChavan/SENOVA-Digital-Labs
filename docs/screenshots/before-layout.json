@@ -1,0 +1,350 @@
+{
+  "desktop /": {
+    "docHeight": 4657,
+    "horizontalScroll": false,
+    "overflowingElements": [],
+    "blocks": [
+      {
+        "heading": "THINKCreatively.",
+        "id": null,
+        "top": 0,
+        "height": 900,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "pt-28",
+          "sm:pt-32",
+          "lg:pt-36",
+          "pb-16",
+          "sm:pb-20"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Latest Projects",
+        "id": "portfolio",
+        "top": 900,
+        "height": 949,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "What We HelpYou Shape",
+        "id": "services",
+        "top": 1849,
+        "height": 338,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "The Minds BehindSENOVA",
+        "id": "founders",
+        "top": 2187,
+        "height": 644,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Scale Your Business. We Pay For Your Tru",
+        "id": "offer",
+        "top": 2831,
+        "height": 642,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": -1
+      },
+      {
+        "heading": "FAQs",
+        "id": null,
+        "top": 3472,
+        "height": 373,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Start Your Digital Journey",
+        "id": "contact-form",
+        "top": 3845,
+        "height": 362,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "3xl:py-36"
+        ],
+        "gapToNext": 1
+      },
+      {
+        "heading": "Let's build incrediblework together.",
+        "id": null,
+        "top": 4208,
+        "height": 450,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [],
+        "gapToNext": null
+      }
+    ]
+  },
+  "desktop /upcoming-projects": {
+    "docHeight": 1350,
+    "horizontalScroll": false,
+    "overflowingElements": [],
+    "blocks": [
+      {
+        "heading": "Upcoming Projects",
+        "id": null,
+        "top": 0,
+        "height": 900,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "pb-24",
+          "md:pb-32",
+          "lg:pb-36",
+          "3xl:pb-40"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Let's build incrediblework together.",
+        "id": null,
+        "top": 900,
+        "height": 450,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [],
+        "gapToNext": null
+      }
+    ]
+  },
+  "mobile /": {
+    "docHeight": 6666,
+    "horizontalScroll": false,
+    "overflowingElements": [],
+    "blocks": [
+      {
+        "heading": "THINKCreatively.",
+        "id": null,
+        "top": 0,
+        "height": 844,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "pt-28",
+          "sm:pt-32",
+          "lg:pt-36",
+          "pb-16",
+          "sm:pb-20"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Latest Projects",
+        "id": "portfolio",
+        "top": 844,
+        "height": 1069,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "What We HelpYou Shape",
+        "id": "services",
+        "top": 1913,
+        "height": 687,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "The Minds BehindSENOVA",
+        "id": "founders",
+        "top": 2600,
+        "height": 1132,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Scale Your Business. We Pay For Your Tru",
+        "id": "offer",
+        "top": 3732,
+        "height": 966,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "FAQs",
+        "id": null,
+        "top": 4698,
+        "height": 695,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "lg:py-32",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Start Your Digital Journey",
+        "id": "contact-form",
+        "top": 5393,
+        "height": 569,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "py-20",
+          "md:py-28",
+          "3xl:py-36"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Let's build incrediblework together.",
+        "id": null,
+        "top": 5962,
+        "height": 704,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [],
+        "gapToNext": null
+      }
+    ]
+  },
+  "mobile /upcoming-projects": {
+    "docHeight": 1548,
+    "horizontalScroll": false,
+    "overflowingElements": [],
+    "blocks": [
+      {
+        "heading": "Upcoming Projects",
+        "id": null,
+        "top": 0,
+        "height": 844,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [
+          "pb-24",
+          "md:pb-32",
+          "lg:pb-36",
+          "3xl:pb-40"
+        ],
+        "gapToNext": 0
+      },
+      {
+        "heading": "Let's build incrediblework together.",
+        "id": null,
+        "top": 844,
+        "height": 704,
+        "paddingTop": "0px",
+        "paddingBottom": "0px",
+        "marginTop": "0px",
+        "marginBottom": "0px",
+        "spacingClasses": [],
+        "gapToNext": null
+      }
+    ]
+  }
+}

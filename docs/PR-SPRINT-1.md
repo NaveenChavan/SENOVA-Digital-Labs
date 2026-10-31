@@ -1,127 +1,177 @@
-# Sprint 1: Critical Technical SEO
+# Sprint 1: Critical Technical SEO, with build-time prerendering
 
-**Branch:** `feature/advanced-seo` → `main`
-**Scope:** Sprint 1 only. Sprints 2–6 are not part of this PR (see `docs/SEO-ROADMAP.md`). Nothing here has been merged or deployed.
+**Branch:** `feature/advanced-seo-prerender` → `main`
+**Replaces:** the earlier `feature/advanced-seo` PR draft. This branch contains all of it, plus the prerender that fixes the raw-HTML blocker.
+**Status:** for review. Nothing merged or deployed to production. Sprints 2–6 are not included.
 
-## Read this first: one trade-off to approve
+## The blocker this fixes
 
-This PR moves all route metadata (title, description, canonical, Open Graph, Twitter) out of the static `index.html` and into a per-route `<SEO>` component that runs in the browser. That is required to get correct, unique tags per route, but it has a direct consequence:
+Before this change, the page metadata was set by JavaScript only. A crawler or link-preview scraper that doesn't run JavaScript received no `<title>`, description, canonical or `<h1>` for either route. Today's production site serves the homepage's title and canonical on `/upcoming-projects`.
 
-Measured on the live site (production = `main`) on 2026-10-31: `/upcoming-projects` currently serves the homepage's title and canonical (`https://www.senovadigital.xyz/`) in its raw HTML, and no route has an `<h1>` in raw HTML.
+After this change, both routes ship their correct metadata and visible content in the initial HTML, before any JavaScript runs:
 
-| Raw HTML (what a crawler gets **without** running JavaScript) | `main` today | This PR |
+| Raw HTML (`curl`, no JavaScript) | `/` | `/upcoming-projects` |
 |---|---|---|
-| `<title>` | present (homepage title on every route) | **absent** |
-| meta description, canonical, `og:*`, `twitter:*` | present (homepage values on every route) | **absent** |
-| `<h1>` | absent (client-rendered) | **absent** |
-| Body content | absent (client-rendered) | **absent** |
-| JSON-LD | `ProfessionalService` | `ProfessionalService` |
+| `<title>` | SENOVA Digital Labs \| Web Development & SaaS Company in Raichur | Upcoming Projects \| SENOVA Digital Labs |
+| Canonical | `https://www.senovadigital.xyz/` | `https://www.senovadigital.xyz/upcoming-projects` |
+| Meta description | 1, page-specific | 1, page-specific |
+| `og:url` | matches canonical | matches canonical |
+| `<h1>` | 1: "THINK Creatively." | 1: "Upcoming Projects" |
+| Body content | full page (79.8 kB) | full page (25.1 kB) |
+| JSON-LD | ProfessionalService, Organization, WebSite | ProfessionalService |
 
-After JavaScript runs, every route has exactly one correct title, canonical and H1 (verified below). Googlebot and Bing execute JavaScript, so search indexing should work. **Crawlers and link-preview scrapers that do not run JavaScript (WhatsApp, LinkedIn, Facebook, X/Twitter previews and similar) will lose the title, description and image preview** until the site is prerendered. Prerendering is the Sprint 2 work (implemented separately on `feature/advanced-seo-sprints-2-6`, not part of this PR and not approved yet).
+`/upcoming-projects/` (trailing slash) serves the same page. Unknown URLs get an empty shell with **no** canonical, so no URL can be indexed as a copy of the homepage.
 
-Practical consequence: the "title, canonical, H1 and content exist in the raw HTML" check **cannot pass on this PR alone**. Options:
-1. Merge and deploy this PR together with the Sprint 2 prerender once that is approved (recommended).
-2. Merge this PR alone and accept weaker link previews until Sprint 2.
-3. Hold this PR.
+## How it works
 
-## Summary
+This is **not** a framework migration. Routing, components and the deployment model are unchanged; Vercel still serves static files from `dist/`.
 
-Fixes the technical SEO foundation: route-specific metadata via a reusable `<SEO>` component, correct canonical URLs, removal of the duplicate homepage H1, removal of meta tags and schema fields with no supporting evidence, and a sitemap/robots/anchor audit. No design, branding, animation, routing or functional changes (Firebase, contact form, WhatsApp and OneSignal are untouched).
+1. **Build** (`npm run build`) now runs three steps:
+   - `vite build` builds the browser bundle, as before.
+   - `vite build --ssr src/entry-server.jsx --outDir dist-ssr` builds a Node version of the same app.
+   - `node scripts/prerender.mjs` renders `/` and `/upcoming-projects` to HTML with `react-dom/server` and writes `dist/index.html` and `dist/upcoming-projects/index.html`.
+2. **The build fails** if either page doesn't have exactly 1 `<title>`, 1 `<h1>`, 1 meta description and 1 canonical with the expected URL. A broken page can't ship silently.
+3. **In the browser**, `src/main.jsx` calls `hydrateRoot`, so React reuses the prerendered DOM instead of discarding and re-rendering it.
+4. **Unknown URLs**: `vercel.json` rewrites them to `spa-fallback.html`, the untouched shell. Vercel serves real files before applying rewrites, so the two prerendered pages are served directly.
 
-## Why this PR exists
+### Deployment implications
 
-`react-helmet-async` was already a dependency but had no `HelmetProvider` and was never used; all metadata was static and global in `index.html`, so every route (including future ones) shared one title and canonical. The homepage also rendered two `<h1>` elements (Hero's "THINK Creatively." and Offer's "Scale Your Business..."), `/upcoming-projects` had no `<h1>`, and `index.html` carried tags with no SEO value (`keywords`, `geo.region`, `geo.placename`, `ICBM`).
+| | Before | After |
+|---|---|---|
+| Build command | `vite build` | `npm run build` (3 steps), pinned in `vercel.json` so a dashboard override can't skip the prerender |
+| Build time | about 3 s | about 7 s locally (prerender step about 2 s) |
+| New dependencies | | **none**: Node built-ins plus packages already in `dependencies` |
+| Needs a browser at build time | no | no (works on Vercel's standard build image) |
+| Network access at build time | no | no (verified with all outbound blocked) |
+| Runtime / hosting | static files | static files, unchanged |
+| Adding a route | add to `App.jsx` | add to `AppShell.jsx` **and** the `ROUTES` list in `scripts/prerender.mjs` (and the sitemap) |
 
-## Files modified
+**Not verified on real Vercel:** branch previews are behind Vercel login (Deployment Protection), so I couldn't fetch them. To verify, open the preview deployment for this branch while logged in, or run the commands in "After deployment" below.
+
+## Hydration: what broke and how it was fixed
+
+Hydration requires the server-rendered and browser-rendered markup to be identical. Four problems surfaced, each confirmed by a failing test before it was fixed:
+
+1. **`NotifyButton` read `Notification` and `navigator` during render.** In Node these don't exist, so the server rendered nothing while the browser rendered a button. React error #418 followed: hydration failed, and React re-rendered but left the prerendered `<head>` tags behind, giving **2 titles and 2 canonicals**. Fix: a `useHasMounted` hook (`useSyncExternalStore` with a separate server snapshot). The button renders nothing until after hydration, matching the HTML, then reads the browser state. Behaviour checked against `main` with permission at default, granted, and the API unavailable: identical in all three.
+2. **Fade-in images stayed invisible.** Portfolio, founder and upcoming-project images start at `opacity: 0` and fade in on React's `onLoad`. With prerendering, the browser can finish loading an image before React attaches that listener, so the event is missed. Reproduced deterministically with JavaScript delayed 1.5 s: 7 images stayed invisible; `main` had 0. Fix: a `useImageLoaded` hook whose ref callback checks `img.complete` when React attaches. 0 invisible images at 0 s, 1.5 s and 4 s JavaScript delay.
+3. **The hero was invisible in the HTML.** Framer Motion writes its `initial` state into the HTML, so the H1, both paragraphs, the CTA row and the logo were prerendered at `opacity: 0`. The H1 was present but not visible until JavaScript ran, which cancels most of the LCP benefit and leaves a blank hero if JavaScript fails. Fix: the hero change already approved for Sprints 2–6. The H1, paragraphs and CTA render without a fade-in, and the logo keeps a scale-in with no fade. The trust badge keeps its fade.
+4. **Footer year** used `new Date()` at render, which would mismatch for a build served across a new year. Fix: a build-time constant (`__BUILD_YEAR__` in `vite.config.js`).
+
+Hydration warnings are not suppressed anywhere. `verify:seo` fails on any hydration error.
+
+## Other changes
+
+- **CSS reset moved into `@layer base`** (`src/index.css`), approved earlier. In Tailwind v4, utilities live in a cascade layer and unlayered CSS beats every layer, so the old `* { margin: 0; padding: 0 }` overrode them. Measured on this build: **364 of 372** padding/margin declarations on the homepage were inert before, **0** after (64 of 64 inert on `/upcoming-projects` before, 0 after). See "Spacing review".
+- **Tailwind scanning excludes `docs/`** (`@source not "../docs"`). The committed Lighthouse HTML reports contain thousands of class-like strings, and Tailwind was generating unused CSS from them (57.16 → 59.39 kB). That was a bug from my own earlier commit; CSS is back to 57.14 kB.
+- **`fetchPriority` casing** in Hero and Navbar. React printed a warning for the lowercase form during prerender. The priority hint still reached the browser before, so this only silences the warning.
+- **Schema:** `priceRange` and `geo` coordinates removed (earlier commit), as nothing on the site supports them.
+
+## Files changed vs `main`
 
 | File | Change |
 |---|---|
-| `src/components/SEO.jsx` (new) | Reusable per-route component: title, description, canonical, robots, Open Graph, Twitter Card, optional JSON-LD. Every route passes explicit values; nothing is built by string concatenation. |
-| `src/main.jsx` | Wraps the app in `HelmetProvider`. |
-| `index.html` | Removed `meta[name=keywords]`, `geo.region`, `geo.placename`, `ICBM`, and every static title/description/canonical/OG/Twitter tag (see "Bug found"). In the `ProfessionalService` JSON-LD, removed `priceRange` and `geo` coordinates (see "Schema"). |
-| `src/pages/Home.jsx` | `<SEO>` with homepage title, description, canonical `https://www.senovadigital.xyz/`, plus `Organization` and `WebSite` JSON-LD built only from details the site already publishes. |
-| `src/pages/UpcomingProjects.jsx` | `<SEO>` with its own title, description and canonical; main heading promoted from `h2` to `h1` (the page had no H1). |
-| `src/components/Hero.jsx` | "THINK Creatively." stays the single homepage H1; added a visible descriptive subheading: "Custom Website Development, SaaS Solutions & Business Automation for Growing Businesses." |
-| `src/components/Offer.jsx` | Heading demoted `h1` → `h2` (fixes the duplicate H1). No copy, style or layout change. |
-| `src/components/Portfolio.jsx` | Bare `<a href="#contact-form">` → `<Link to="/#contact-form">`, consistent with every other in-page anchor. |
-| `public/sitemap.xml` | `lastmod` corrected. `robots.txt` audited, no change needed. |
-| `docs/SEO-ROADMAP.md`, `docs/PR-SPRINT-1.md` (new) | Roadmap for Sprints 2–6 and this description. |
-
-## Technical implementation
-
-- `<SEO>` renders `<title>`, `<meta>`, `<link rel="canonical">` and JSON-LD `<script>` tags through `react-helmet-async`. On React 19 that library lets React hoist those tags into `<head>`, so route changes update the head correctly (verified with client-side navigation).
-- Each route supplies its own `title`, `description` and `canonicalUrl`. Social tags default to the same page's values, never another page's.
-- `index.html` keeps only global tags: charset, viewport, theme-color, author, icons, manifest, the logo preload, the OneSignal script, and the static `ProfessionalService` JSON-LD.
-
-### Bug found during verification
-
-The first implementation kept a fallback title and canonical in `index.html`, assuming Helmet would replace them. It does not remove static tags it didn't render itself. Rendered-DOM inspection showed 2 `<title>` and 2 `<link rel="canonical">` tags on every page, and on `/upcoming-projects` the leftover static canonical was the homepage URL. Fixed by removing all route-specific static tags, so `<SEO>` is the single source per route. This is also the cause of the raw-HTML trade-off above.
-
-### Schema (`ProfessionalService` in `index.html`)
-
-Kept, because each is published on the site or was specified as the business's location: `name`, `url`, `image`, `email`, `telephone` (+91 9731133425, shown in the footer and contact section), `sameAs` social profiles (linked in the footer), `makesOffer` (matches the hero subheading), and a **city-level** `address` (Raichur, Karnataka, IN; no street address).
-
-Removed, because nothing on the site supports them:
-- `priceRange: "$$"`: no prices are published anywhere.
-- `geo` coordinates (16.2076, 77.3463): these are city-centre coordinates for Raichur, not a verified office location.
-
-Open items for SENOVA: "Raichur" and "Karnataka" appear in the page title and meta description but not in the visible page body, so the address is not corroborated by visible text; consider adding a visible "Based in Raichur, Karnataka" line. `areaServed` includes "Worldwide", matching the homepage description ("businesses in Raichur and worldwide").
+| `src/components/SEO.jsx` (new) | Per-route title, description, canonical, robots, Open Graph, Twitter, JSON-LD |
+| `src/AppShell.jsx` (new) | Layout and routes, shared by browser and prerender |
+| `src/entry-server.jsx` (new) | Build-time render entry |
+| `src/hooks/useHasMounted.js` (new) | Hydration-safe "has mounted" flag |
+| `src/hooks/useImageLoaded.js` (new) | Hydration-safe image load tracking |
+| `scripts/prerender.mjs` (new) | Writes the two pages and validates them |
+| `scripts/verify-seo.mjs` (new) | 41 checks (below) |
+| `scripts/capture-layout.mjs`, `scripts/lighthouse-run.mjs` (new) | Screenshot/spacing audit and repeatable Lighthouse runs (dev tools, not part of the build) |
+| `src/main.jsx` | `HelmetProvider`; `hydrateRoot` when prerendered HTML is present |
+| `src/App.jsx` | Wraps `AppShell` in `BrowserRouter` |
+| `src/components/NotifyButton.jsx` | Browser checks moved after mount |
+| `src/components/Hero.jsx` | Hero text/CTA without fade-in; one visible descriptive subheading; `fetchPriority` |
+| `src/components/Portfolio.jsx`, `FoundersSection.jsx`, `src/pages/UpcomingProjects.jsx` | `useImageLoaded`; `/#contact-form` link fix (Portfolio); `<SEO>` and `h1` (UpcomingProjects) |
+| `src/components/Offer.jsx` | Duplicate `h1` demoted to `h2` |
+| `src/components/Footer.jsx` | Build-time year |
+| `src/components/Navbar.jsx` | `fetchPriority` casing |
+| `src/pages/Home.jsx` | `<SEO>` with Organization + WebSite JSON-LD |
+| `src/index.css` | Reset in `@layer base`; `@source not "../docs"` |
+| `index.html` | Route-specific static tags removed (prerender now provides them); `priceRange`/`geo` removed |
+| `vercel.json` | Pinned build command and output directory; rewrite to `spa-fallback.html` |
+| `vite.config.js` | `__BUILD_YEAR__` |
+| `eslint.config.js` | Ignore `dist-ssr`; declare `__BUILD_YEAR__` |
+| `package.json` | `build` runs the 3 steps; `verify:seo` script |
+| `public/sitemap.xml` | `lastmod` corrected |
+| `docs/` | This description, the roadmap, Lighthouse reports, screenshots |
 
 ## Test results
 
-All checks run against the production build of this branch, served locally with a Vercel-style SPA rewrite (exact file, otherwise `index.html` with HTTP 200), in Chromium via Playwright with external hosts blocked.
+All on a clean build of this branch.
 
-**Build:** `npm run build` exits 0. `dist/index.html` is 4.24 kB (`main`: 5.30 kB). Main JS bundle is 689.4 kB / 214.7 kB gzip (`main`: 670.1 kB / 208.5 kB gzip); the 19 kB increase is `react-helmet-async`, which was a dependency but previously unused and tree-shaken out. The pre-existing ">500 kB chunk" warning remains and is out of scope.
+**`npm run build`**: exit 0. `dist/index.html` 79.8 kB (prerendered), `dist/upcoming-projects/index.html` 25.1 kB. CSS 57.14 kB. JS 689.9 kB / 214.9 kB gzip (`main`: 670.1 / 208.5); the +19 kB is `react-helmet-async`. The pre-existing ">500 kB chunk" warning remains (Sprint 6 scope).
 
-**Rendered DOM (JavaScript on):**
+**`npm run verify:seo`: 41/41 pass.** It serves `dist/` with Vercel's resolution rules and checks in Chromium:
+- **JavaScript off, both routes:** HTTP 200; exactly 1 title with the expected text; 1 non-empty description; 1 canonical with the expected URL; `robots` = `index, follow`; `og:url` = canonical; 1 `h1` with the expected text; expected JSON-LD types, all valid; key body text present.
+- **JavaScript on, both routes:** the prerendered DOM is reused, not replaced; zero hydration or page errors; still exactly 1 of each tag; JSON-LD not duplicated.
+- **Other URLs:** the trailing-slash URL serves the right page; unknown URLs get the shell with no canonical.
+- **Navigation and images:** client-side navigation updates title and canonical; no loaded image stays invisible with JavaScript delayed 2 s.
+- **Sitemap:** lists exactly the two routes.
 
-| Check | `/` | `/upcoming-projects` | `/upcoming-projects/` |
-|---|---|---|---|
-| HTTP status | 200 | 200 | 200 |
-| `<title>` count / text | 1 / "SENOVA Digital Labs \| Web Development & SaaS Company in Raichur" | 1 / "Upcoming Projects \| SENOVA Digital Labs" | same as left |
-| Canonical count / value | 1 / `https://www.senovadigital.xyz/` | 1 / `https://www.senovadigital.xyz/upcoming-projects` | 1 / `.../upcoming-projects` (no trailing slash) |
-| `<h1>` count / text | 1 / "THINK Creatively." | 1 / "Upcoming Projects" | 1 / same |
-| Meta description, `og:title` | 1 each | 1 each | 1 each |
-| `keywords`, `geo.*`, `ICBM` meta | none | none | none |
-| JSON-LD types | ProfessionalService, Organization, WebSite | ProfessionalService | ProfessionalService |
-| `priceRange` / `geo` in schema | removed | removed | removed |
+The suite was checked against known-bad code. With the original `NotifyButton` restored it reports 14 failures, including React #418 and the duplicate titles. With the image fix removed from Portfolio it fails naming the 4 Portfolio images.
 
-**Raw HTML (JavaScript off):** HTTP 200 on all three URLs, but title, description, canonical, `og:*`, `<h1>` and body text are all absent; only the static `ProfessionalService` JSON-LD is present. See the trade-off at the top.
+**`npm run lint`:** 2 problems, both pre-existing on `main`: `importScripts` in `OneSignalSDKWorker.js`, and an unused-import false positive for `motion` in `NotifyButton.jsx`. `main` has 3; the `exhaustive-deps` warning is gone.
 
-**Direct load / refresh:** `/upcoming-projects` and `/upcoming-projects/` return 200 and render correctly when requested directly (SPA rewrite). The same rewrite exists in the unchanged `vercel.json`; confirm on the real deployment.
+## Spacing review (CSS reset)
 
-**Navigation:** "Work" nav link → `/#portfolio`; `/upcoming-projects` early-access link → homepage `#contact-form` (cross-route hash scroll works); Portfolio's bottom CTA is now `href="/#contact-form"`. No new console errors; OneSignal rejects non-production hosts, which is pre-existing.
+Screenshots are in `docs/screenshots/` (`before-*` / `after-*`, desktop 1280 px and mobile 390 px, both routes, 50% scale). They differ only in the reset change.
 
-**Sitemap / robots:** `sitemap.xml` lists exactly `/` and `/upcoming-projects` with `lastmod` 2026-10-31. `robots.txt` allows all and points at the sitemap. No `noindex` anywhere.
+| Page | Before | After |
+|---|---|---|
+| `/` desktop | 4,657 px | 8,641 px |
+| `/` mobile | 6,666 px | 10,508 px |
+| `/upcoming-projects` desktop | 1,350 px | 1,967 px |
+| `/upcoming-projects` mobile | 1,548 px | 2,159 px |
 
-**Lint:** `npm run lint` reports 3 problems (OneSignalSDKWorker.js, NotifyButton.jsx), identical to `main`. No new issues.
+- **Every section's padding now equals its class.** The root font size is `clamp(16px, 15.6px + 0.12vw, 18px)`, so `lg:py-32` = 8rem = 137.1 px at 1280 px and `py-20` = 5rem = 80.3 px at 390 px. Before, all of them computed 0 px. Per-section numbers are in `docs/screenshots/*-layout.json`.
+- **No unintended gaps:** space between consecutive sections is 0–1 px (rounding) everywhere. The extra height is entirely the padding the sections already declared.
+- **No layout regressions detected:** no horizontal scroll and no element wider than the viewport, on either route, before or after.
+- **Every spacing utility checked, not just sections:** 372 declarations on `/` and 64 on `/upcoming-projects` all match their classes after the change, on desktop and mobile.
+
+This is a large visual change. The numbers show the classes now do what they say; whether the designed spacing is the spacing you want is a design call. Please look at the screenshots.
+
+## Performance (Lighthouse, mobile, `/`)
+
+Interleaved with `main` on the same machine, 6 runs each, simulated slow 4G and 4x CPU:
+
+| | Performance median (range) | FCP | LCP | TBT | CLS |
+|---|---|---|---|---|---|
+| `main` | 46 (45–50) | 3.74 s | 5.78 s | 865 ms | 0 |
+| This branch | 49 (45–59) | 3.41 s | **4.40 s** | 1,187 ms | 0.002 |
+
+- **LCP improves.** In 5 of 6 runs it was 4.33–5.37 s, against 5.71–6.14 s for every `main` run. One run spiked to 9.18 s.
+- **TBT is higher.** Hydration runs on page load (865 → 1,187 ms median).
+- **The score difference is within run-to-run noise.** Treat it as unchanged.
+- **Mobile is still not optimized:** LCP is above the 2.5 s target. Desktop: median 96 (81–96) vs 92 for `main`.
+
+HTML reports are in `docs/lighthouse/`. The follow-up plan is in the Sprints 2–6 review (`docs/MOBILE-PERFORMANCE.md`), not in this PR.
 
 ## Remaining limitations
 
-- **Raw HTML has no per-route metadata or content until prerendering exists** (top of this document). Biggest effect: link previews on non-JS scrapers.
-- Homepage schema declares the business twice (`ProfessionalService` in `index.html` and `Organization` from `Home.jsx`). Valid, but duplicated; Sprint 2 merges them into one entity.
-- Sitemap is hand-maintained (two routes).
-- Pre-existing >500 kB JS chunk (Sprint 6 scope); this PR adds 19 kB (`react-helmet-async`).
-- Mobile performance is not addressed here and is not optimized. Lighthouse mobile on this branch: median 42 (5 runs, local), versus 44 for `main` under the same conditions, which is within run-to-run noise. Live production mobile: median 32 (3 runs). HTML reports and summaries in `docs/lighthouse/` on this branch.
-- Schema `address` is not corroborated by visible body text (see Schema).
+- Real Vercel behaviour (build log, file serving) not observed; previews require login.
+- Lighthouse numbers are local and noisy. Use PageSpeed Insights on the deployed preview for decisions.
+- The navbar's slide-in starts off-screen (`y: -100`), so without JavaScript it isn't visible. Its links are still in the HTML for crawlers. Not changed here.
+- Homepage schema declares the business twice (`ProfessionalService` and `Organization`). Valid, but merged into one entity in Sprint 2.
+- Routes are listed by hand in `prerender.mjs` and `sitemap.xml` (two routes).
 - Not validated by Google's Rich Results Test or Search Console; that needs the deployed URL.
-- No Google Analytics or Search Console changes in this PR.
 
 ## How to verify locally
 
 ```
-git checkout feature/advanced-seo
+git checkout feature/advanced-seo-prerender
 npm install
 npm run build
-npm run preview
-# open http://localhost:4173/ and /upcoming-projects, inspect <head> and <h1> in DevTools
-# View Source shows the metadata is absent from the raw HTML (see trade-off above)
+npm run verify:seo      # set CHROMIUM_PATH if Playwright's browser build isn't installed
+npm run preview         # then View Source on / and /upcoming-projects
 ```
 
-## After deployment (checklist for the live site)
+## After deployment
 
-1. `/` and `/upcoming-projects`: rendered DOM has 1 title, 1 canonical, 1 H1 (DevTools Elements, or "Inspect" in Search Console URL Inspection → Live Test → View tested page).
-2. `/sitemap.xml` and `/robots.txt` load, list the two URLs, no `noindex`.
-3. Direct load and refresh of `/upcoming-projects` return 200.
-4. Paste `/` into a link-preview tool (for example a WhatsApp chat or the LinkedIn Post Inspector) to see the effect of the raw-HTML trade-off.
-5. Rich Results Test on `/` for the `ProfessionalService`, `Organization` and `WebSite` schema.
+1. `curl -s https://www.senovadigital.xyz/upcoming-projects | grep -E "<title>|rel=\"canonical\"|<h1"`: must show the Upcoming Projects title, its own canonical, and an h1.
+2. The same for `/`.
+3. `/upcoming-projects/` and a refresh on `/upcoming-projects`: HTTP 200, same page.
+4. `/sitemap.xml` and `/robots.txt`: 200, two URLs, no `noindex`.
+5. An unknown URL: 200 shell, and View Source shows no canonical.
+6. Rich Results Test on `/`; LinkedIn Post Inspector or a WhatsApp paste for the link preview.
+7. PageSpeed Insights (mobile) on `/` before and after.
