@@ -128,6 +128,24 @@ async function startServer(originalShellHtml) {
   return { server, baseUrl: `http://127.0.0.1:${port}` };
 }
 
+// Vercel's build image lacks the system libraries stock Chrome needs, so there
+// we use @sparticuz/chromium (a serverless-compatible build). Everywhere else
+// puppeteer's own Chrome is used. SENOVA_USE_SPARTICUZ=1 forces it for testing.
+async function launchBrowser() {
+  if (process.env.VERCEL || process.env.SENOVA_USE_SPARTICUZ) {
+    const { default: chromium } = await import("@sparticuz/chromium");
+    return puppeteer.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: "shell",
+    });
+  }
+  return puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+}
+
 async function run() {
   const shellPath = path.join(distDir, "index.html");
   if (!fs.existsSync(shellPath)) {
@@ -139,10 +157,7 @@ async function run() {
   const originalShellHtml = fs.readFileSync(shellPath, "utf-8");
 
   const { server, baseUrl } = await startServer(originalShellHtml);
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+  const browser = await launchBrowser();
 
   try {
     for (const { route, out } of ROUTES) {
