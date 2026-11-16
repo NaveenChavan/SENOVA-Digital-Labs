@@ -8,6 +8,8 @@
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="preload" as="image" href="/assets/logo.webp" fetchpriority="high" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0b1120" />
     <link rel="canonical" href="https://www.senovadigital.xyz/" />
@@ -45,6 +47,9 @@
       content="Transforming businesses into tech-driven powerhouses with clean code and premium design. Serving Raichur and clients worldwide."
     />
     <meta property="og:image" content="https://www.senovadigital.xyz/android-chrome-512x512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="SENOVA Digital Labs logo" />
     <meta property="og:locale" content="en_IN" />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -75,8 +80,10 @@
       {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
+        "@id": "https://www.senovadigital.xyz/#organization",
         "name": "SENOVA Digital Labs",
         "image": "https://www.senovadigital.xyz/android-chrome-512x512.png",
+        "logo": "https://www.senovadigital.xyz/android-chrome-512x512.png",
         "url": "https://www.senovadigital.xyz/",
         "email": "info@senovadigital.xyz",
         "telephone": "+91-9731133425",
@@ -96,6 +103,19 @@
           { "@type": "City", "name": "Raichur" },
           { "@type": "Country", "name": "India" },
           { "@type": "Place", "name": "Worldwide" }
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "telephone": "+91-9731133425",
+            "contactType": "customer service",
+            "areaServed": ["IN", "Worldwide"],
+            "availableLanguage": ["English", "Hindi", "Kannada"]
+          }
+        ],
+        "founder": [
+          { "@type": "Person", "name": "Naveen Chavan", "jobTitle": "Tech Lead & Partnerships" },
+          { "@type": "Person", "name": "Shrihari", "jobTitle": "Systems Architect & Operations" }
         ],
         "sameAs": [
           "https://www.instagram.com/senovadigitallabs",

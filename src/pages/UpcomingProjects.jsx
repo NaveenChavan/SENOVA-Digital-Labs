@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import { ArrowRight, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -136,8 +137,47 @@ const UpcomingProjectCard = ({ project, index, onSelect }) => {
 const UpcomingProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.senovadigital.xyz/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Upcoming Projects",
+        item: "https://www.senovadigital.xyz/upcoming-projects",
+      },
+    ],
+  };
+
   return (
     <section className="relative pb-24 md:pb-32 lg:pb-36 3xl:pb-40 bg-[#0B1120] min-h-screen">
+      <Helmet>
+        <title>Upcoming Projects | SENOVA Digital Labs, Raichur</title>
+        <meta
+          name="description"
+          content="Preview the in-house SaaS products SENOVA Digital Labs is building next: an AI sales dashboard and a gym management system. Built in Raichur, launching soon."
+        />
+        <link
+          rel="canonical"
+          href="https://www.senovadigital.xyz/upcoming-projects"
+        />
+        <meta property="og:url" content="https://www.senovadigital.xyz/upcoming-projects" />
+        <meta property="og:title" content="Upcoming Projects | SENOVA Digital Labs" />
+        <meta
+          property="og:description"
+          content="In-house SaaS products SENOVA Digital Labs is building next, from Raichur to the world."
+        />
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
+      </Helmet>
       {/* Fixed-height spacer to clear the fixed navbar. */}
       <div style={{ height: "120px" }} aria-hidden="true" />
 
