@@ -7,14 +7,14 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 export default defineConfig([
   globalIgnores(['dist', 'scripts']),
   {
-    files: ['public/firebase-messaging-sw.js'],
+    files: ['public/firebase-messaging-sw.js', 'public/OneSignalSDKWorker.js'],
     languageOptions: {
       globals: { ...globals.serviceworker, importScripts: 'readonly', firebase: 'readonly' },
     },
   },
   {
     files: ['**/*.{js,jsx}'],
-    ignores: ['public/firebase-messaging-sw.js'],
+    ignores: ['public/firebase-messaging-sw.js', 'public/OneSignalSDKWorker.js'],
     extends: [
       js.configs.recommended,
       reactHooks.configs.flat.recommended,
@@ -30,7 +30,12 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // No react/jsx-uses-vars plugin here, so JSX-only identifiers (<Icon />,
+      // <motion.div>) look unused. Allow capitalised names and `motion`.
+      'no-unused-vars': [
+        'error',
+        { varsIgnorePattern: '^([A-Z_]|motion$)', argsIgnorePattern: '^[A-Z_]' },
+      ],
     },
   },
 ])

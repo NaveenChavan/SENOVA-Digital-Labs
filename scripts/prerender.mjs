@@ -85,16 +85,40 @@ async function revealInViewContent(page) {
       const step = 400;
       let total = 0;
       const timer = setInterval(() => {
-        window.scrollBy(0, step);
+        window.scrollBy({ top: step, behavior: "instant" });
         total += step;
         if (total >= document.body.scrollHeight) {
           clearInterval(timer);
-          window.scrollTo(0, 0);
+          window.scrollTo({ top: 0, behavior: "instant" });
           resolve();
         }
       }, 100);
     });
   });
+}
+
+// Inline the (small) stylesheet so first paint doesn't wait on a CSS request,
+// and preload the primary font so text doesn't visibly swap late.
+function optimizeHead(html) {
+  const assets = path.join(distDir, "assets");
+  const latinFont = fs
+    .readdirSync(assets)
+    .find((f) => /^inter-latin-wght-normal-.*\.woff2$/.test(f));
+  html = html.replace(
+    /<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/,
+    (tag, href) => {
+      const file = path.join(distDir, href);
+      if (!fs.existsSync(file)) return tag;
+      return `<style>${fs.readFileSync(file, "utf-8")}</style>`;
+    },
+  );
+  if (latinFont) {
+    html = html.replace(
+      "</head>",
+      `<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/${latinFont}"></head>`,
+    );
+  }
+  return html;
 }
 
 async function startServer(originalShellHtml) {
@@ -107,8 +131,7 @@ async function startServer(originalShellHtml) {
 async function run() {
   const shellPath = path.join(distDir, "index.html");
   if (!fs.existsSync(shellPath)) {
-    console.error("dist/index.html not found — run `vite build` first.");
-    process.exit(1);
+    throw new Error("dist/index.html not found, run `vite build` first.");
   }
   // Snapshot the pristine build output once, before any route's prerendered
   // HTML gets written back into dist/ and could otherwise leak into later
@@ -125,15 +148,72 @@ async function run() {
     for (const { route, out } of ROUTES) {
       const page = await browser.newPage();
       await page.setViewport({ width: 1440, height: 900 });
+      // Lets components skip browser-only effects so the snapshot equals the
+      // first client render (required for hydrateRoot to reuse the DOM).
+      await page.evaluateOnNewDocument(() => {
+        window.__PRERENDER__ = true;
+      });
+      // Third-party scripts must not run (or inject DOM) during the snapshot.
+      // They still load normally for real visitors from the original tags.
+      await page.setRequestInterception(true);
+      page.on("request", (request) => {
+        const host = new URL(request.url()).hostname;
+        if (host === "cdn.onesignal.com" || host.endsWith("onesignal.com")) {
+          request.abort();
+        } else {
+          request.continue();
+        }
+      });
       await page.goto(`${baseUrl}${route}`, {
         waitUntil: "networkidle0",
         timeout: 60000,
       });
+      await page.evaluate(() => document.fonts.ready);
       await revealInViewContent(page);
+      // Wait until the page is really back at the top and the navbar's scroll
+      // state has reset, otherwise the snapshot bakes in its "scrolled" style.
+      await page.waitForFunction(() => window.scrollY === 0);
       // Let react-helmet-async and the final re-render settle.
       await new Promise((resolve) => setTimeout(resolve, 400));
 
-      const html = await page.content();
+      // Mark the snapshot so the CSS entrance animation doesn't replay when
+      // React mounts over it (which would flash the hero on every load).
+      // React renders `© {year} Name` as three adjacent text nodes, but HTML
+      // serialization merges them into one, which breaks hydration (React
+      // error #418). React's own server renderer separates such nodes with
+      // `<!-- -->`; do the same here before serializing.
+      await page.evaluate(() => {
+        const walker = document.createTreeWalker(document.getElementById("root"), NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        for (const node of nodes) {
+          const next = node.nextSibling;
+          if (next && next.nodeType === Node.TEXT_NODE) {
+            node.parentNode.insertBefore(document.createComment(" "), next);
+          }
+        }
+      });
+
+      // Scroll-reveal sections are un-revealed again so the snapshot matches
+      // the client's first render. A <noscript> rule in index.html keeps them
+      // visible without JavaScript, and crawlers read the text either way.
+      let html = (await page.content())
+        .replace(/(class="[^"]*?)\s*\bis-visible\b/g, "$1")
+        .replace(
+        /<html([^>]*)>/,
+        (m, attrs) =>
+          attrs.includes("data-prerendered") ? m : `<html${attrs} data-prerendered>`,
+      );
+      // `js-reveal` is added by main.jsx while the page runs in Chrome here; it
+      // must not be baked in, or sections would be hidden before JS loads.
+      html = html.replace(
+        /<html([^>]*?)\s*class="([^"]*)"/,
+        (m, before, classes) => {
+          const kept = classes.split(/\s+/).filter((c) => c && c !== "js-reveal");
+          return kept.length ? `<html${before} class="${kept.join(" ")}"` : `<html${before}`;
+        },
+      );
+      html = optimizeHead(html);
       const outPath = path.join(distDir, out);
       fs.mkdirSync(path.dirname(outPath), { recursive: true });
       fs.writeFileSync(outPath, html);
@@ -146,7 +226,38 @@ async function run() {
   }
 }
 
-run().catch((err) => {
-  console.error("Prerender failed:", err);
-  process.exit(1);
-});
+// Keep sitemap <lastmod> equal to the build date so it never goes stale.
+function refreshSitemap() {
+  const sitemapPath = path.join(distDir, "sitemap.xml");
+  if (!fs.existsSync(sitemapPath)) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const xml = fs
+    .readFileSync(sitemapPath, "utf-8")
+    .replace(/<lastmod>[^<]*<\/lastmod>/g, `<lastmod>${today}</lastmod>`);
+  fs.writeFileSync(sitemapPath, xml);
+  console.log(`Sitemap lastmod -> ${today}`);
+}
+
+// If prerendering can't run (e.g. the build host has no Chrome), the site must
+// still deploy. Fall back to the plain client-rendered build and make sure every
+// route file that vercel.json rewrites to exists.
+function fallbackToSpa(err) {
+  console.warn("Prerender skipped, deploying client-rendered build:", err?.message || err);
+  const shell = fs.readFileSync(path.join(distDir, "index.html"), "utf-8");
+  for (const { out } of ROUTES) {
+    const outPath = path.join(distDir, out);
+    if (!fs.existsSync(outPath)) {
+      fs.mkdirSync(path.dirname(outPath), { recursive: true });
+      fs.writeFileSync(outPath, shell);
+    }
+  }
+}
+
+run()
+  .catch(fallbackToSpa)
+  .finally(() => {
+    refreshSitemap();
+    // The local static server may still hold the event loop open if Chrome
+    // failed to launch; always exit so the build never hangs.
+    process.exit(0);
+  });
