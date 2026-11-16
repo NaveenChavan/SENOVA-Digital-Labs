@@ -1,8 +1,8 @@
 import { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { Helmet } from "react-helmet-async";
 import { Plus, Minus, CalendarCheck, Mail } from "lucide-react";
+import useSeoMeta from "../hooks/useSeoMeta";
 
 // FAQ copy grounded in real, established facts about Senova (real stack,
 // real contact channels, real service categories) — no fabricated policies.
@@ -85,11 +85,10 @@ const FAQBooking = () => {
     })),
   };
 
+  useSeoMeta({ jsonLd: { id: "faq-schema", data: faqSchema } });
+
   return (
     <section className="relative py-20 md:py-28 lg:py-32 3xl:py-36 bg-[#0B1120] overflow-hidden">
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
-      </Helmet>
       <div className="noise-overlay" />
       <div className="relative responsive-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 3xl:gap-16">
