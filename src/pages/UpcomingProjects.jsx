@@ -182,8 +182,8 @@ const UpcomingProjects = () => {
     title: "Upcoming Projects | SENOVA Digital Labs, Raichur",
     description:
       "Join the early-access waitlist for the SaaS products SENOVA Digital Labs is building next: an AI sales dashboard and an offline-first gym management system.",
-    canonical: "https://www.senovadigital.xyz/upcoming-projects",
-    ogUrl: "https://www.senovadigital.xyz/upcoming-projects",
+    canonical: "https://senovadigital.xyz/upcoming-projects",
+    ogUrl: "https://senovadigital.xyz/upcoming-projects",
     ogTitle: "Upcoming Projects | SENOVA Digital Labs",
     ogDescription:
       "Early access to the AI sales dashboard and gym management system SENOVA is building in Raichur.",
@@ -193,12 +193,12 @@ const UpcomingProjects = () => {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.senovadigital.xyz/" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://senovadigital.xyz/" },
           {
             "@type": "ListItem",
             position: 2,
             name: "Upcoming Projects",
-            item: "https://www.senovadigital.xyz/upcoming-projects",
+            item: "https://senovadigital.xyz/upcoming-projects",
           },
         ],
       },

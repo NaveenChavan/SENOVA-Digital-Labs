@@ -12,8 +12,8 @@ const Home = () => {
     title: "SENOVA Digital Labs | Web Development & SaaS Company in Raichur",
     description:
       "SENOVA Digital Labs builds custom websites, SaaS products, and automation for businesses in Raichur and worldwide. Premium full-stack web development, MERN/React apps, and local SEO that gets you found.",
-    canonical: "https://www.senovadigital.xyz/",
-    ogUrl: "https://www.senovadigital.xyz/",
+    canonical: "https://senovadigital.xyz/",
+    ogUrl: "https://senovadigital.xyz/",
   });
 
   return (

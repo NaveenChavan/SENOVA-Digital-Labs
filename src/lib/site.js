@@ -2,7 +2,7 @@
 // Keep in sync with the JSON-LD block in index.html (name, address, phone).
 export const SITE = {
   name: "SENOVA Digital Labs",
-  url: "https://www.senovadigital.xyz",
+  url: "https://senovadigital.xyz",
   email: "info@senovadigital.xyz",
   phones: [
     { display: "+91 9731133425", tel: "+919731133425" },
