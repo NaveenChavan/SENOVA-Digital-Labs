@@ -9,7 +9,7 @@ const founders = [
     title: "Founder",
     role: "Tech lead and partnerships",
     bio: "Full-stack developer with a focus on clean UI/UX and product architecture. Naveen builds scalable web products and manages client partnerships so technical work stays tied to business goals.",
-    image: "/assets/Naveen.webp",
+    image: "/assets/naveen-chavan.webp",
     linkedin: SITE.linkedin.naveen,
   },
   {
